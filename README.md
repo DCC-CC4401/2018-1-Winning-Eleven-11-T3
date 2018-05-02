@@ -5,4 +5,5 @@
 3. Ficha de un articulo
 4. Landing page para administradores
 
-Requisitos que deben implementar en forma completa: 1-2, 4-5, 7-8, 12, 14-18, 23, 25-26, 28, 37-40, 51, 54-56.
+## Requisitos que deben implementar en forma completa
+1-2, 4-5, 7-8, 12, 14-18, 23, 25-26, 28, 37-40, 51, 54-56.
