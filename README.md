@@ -1,7 +1,7 @@
 # 2018-1-Winning-Eleven-11-T3
 ## Interfaces (deben ser responsive)
 1. Landing page para personas naturales
-2. Perfil del usuario (vista por el due ̃no del perfil)
+2. Perfil del usuario (vista por el dueño del perfil)
 3. Ficha de un articulo
 4. Landing page para administradores
 
