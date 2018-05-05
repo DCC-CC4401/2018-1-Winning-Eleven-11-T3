@@ -4,4 +4,4 @@ from django.http import HttpResponse
 
 # Create your views here.
 def articulos(request):
-    return HttpResponse("Página de reserva de articulos.")
+    return render(request, 'articulos.html')
