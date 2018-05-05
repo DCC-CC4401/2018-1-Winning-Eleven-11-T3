@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta charset='utf-8' />
+<link href='scripts/fullcalendar.min.css' rel='stylesheet' />
+<link href='scripts/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<script src='scripts/lib/moment.min.js'></script>
+<script src='scripts/lib/jquery.min.js'></script>
+
+<script src='scripts/custom.js'></script>
+<script src='scripts/locale-all.js'></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+
+  $(document).ready(function() {
+    var LocalCode = 'es-do';
+
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prevMonth, prev',
+        center: 'title today',
+          right: 'next, nextMonth'
+      },
+      locale: LocalCode,
+      defaultView: 'agendaWeek',
+      weekends: false,
+      minTime: '09:00:00',
+      maxTime: '18:00:00',
+        aspectRatio: 3.5,
+      allDaySlot: false,
+      editable: false,
+      events: [
+          {
+          title: 'Meeting',
+          start: '2018-05-10T10:30:00',
+          end: '2018-05-10T12:30:00'
+ }
+      ]
+    });
+
+  });
+
+</script>
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+      max-weidth: 800px;
+    margin: 0 auto;
+  }
+
+</style>
+
+<style>
+.EqualColumn {
+    float: left;
+    width: 45%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.menuButton{
+    margin-bottom: 50px;
+}
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.left {
+  margin-left: 100px;
+  width: 10%;
+}
+
+.right {
+  margin-right: 100px;
+  width: 70%;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-left: auto;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+</style>
+<!---------->
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Not U-Cursos</title>
+</head>
+<body>
+<div class="row">
+  <div class="column left">
+        </div>
+  <div class="column right">
+    <h1>Administrador</h1>
+    <hr>
+
+  </div>
+</div>
+<div class="row">
+  <div class="column left">
+      <table>
+        <tr>
+            <div style="font-size: 50px" class="menuButton" name="user" value=""><i class="fa fa-user"></i></div>
+        </tr>
+        <tr>
+            <div style="font-size: 50px" class="menuButton" name="cart" value=""><i class="fa fa-shopping-cart"></i></div>
+        </tr>
+          <tr>
+            <div style="font-size: 50px" class="menuButton" name="calendar" value=""><i class="fa fa-calendar"></i></div>
+        </tr>
+      </table>
+  </div>
+  <div class="column right">
+            <div id="calendar"></div>
+      <div class="row">
+          <div class="EqualColumn" style="margin-left: 20px;">
+              <div align="left" style="position:fixed; margin-bottom: 20px"><h3>Pendientes</h3></div>
+                    <div align="right" style="position:relative">
+                        <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
+                        <i class="fa fa-times-circle" style="color: red; font-size: 30px" ></i>
+                    </div>
+
+
+              <hr>
+
+              <!--- tabla con articulos !-->
+      <table class="table">
+          <tr>
+              <th></th>
+              <th>ID</th>
+              <th>Artículo</th>
+              <th>Usuario</th>
+              <th>Fecha de Préstamo</th>
+              <th>Fecha de Solicitud</th>
+          </tr>
+          <tr>
+              <td><input type="checkbox"></td>
+              <td style="width:20px">ID</td>
+              <td>Artículo</td>
+              <td>Usuario</td>
+              <td>Fecha de Préstamo</td>
+              <td>Fecha de Solicitud</td>
+          </tr>
+      </table>
+          </div>
+
+          <div class="EqualColumn" style="float:right; margin-right: 20px;">
+                            <div align="left" style="position:fixed; margin-bottom: 20px"><h3>Pedidos</h3></div>
+                    <div align="right" style="position:relative">
+                        <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
+                        <i class="fa fa-times-circle" style="color: red; font-size: 30px" ></i>
+                    </div>
+                    <hr>
+
+              <!--- tabla con articulos !-->
+      <table align="right">
+          <tr>
+
+              <th> </th>
+              <th>ID</th>
+              <th>Artículo</th>
+              <th>Usuario</th>
+              <th>Fecha de Préstamo</th>
+              <th>Estado</th>
+          </tr>
+          <tr>
+              <td><input type="checkbox"></td>
+              <td style="width:20px">ID</td>
+              <td>Artículo</td>
+              <td>Usuario</td>
+              <td>Fecha de Préstamo</td>
+              <td>Estado</td>
+          </tr>
+      </table>
+          </div>
+      </div>
+
+  </div>
+  </div>
+</div>
+</body>
+</html>
