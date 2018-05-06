@@ -1,10 +1,10 @@
 from django.urls import path
 from . import views
 
-app_name = 'inventario'
+app_name = 'LandingAdmin'
 
 urlpatterns = [
-    # /inventario/
+    # /landingAdmin/
     path('', views.index, name='index'),
 
 ]

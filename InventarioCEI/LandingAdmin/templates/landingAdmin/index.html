@@ -1,13 +1,13 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="es">
 <meta charset='utf-8' />
-<link href='scripts/fullcalendar.min.css' rel='stylesheet' />
-<link href='scripts/fullcalendar.print.min.css' rel='stylesheet' media='print' />
-<script src='scripts/lib/moment.min.js'></script>
-<script src='scripts/lib/jquery.min.js'></script>
+<link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+<script type="text/javascript" src="{% static 'scripts/lib/moment.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'scripts/lib/jquery.min.js'%}"></script>
 
-<script src='scripts/custom.js'></script>
-<script src='scripts/locale-all.js'></script>
+<script type="text/javascript" src="{% static 'scripts/custom.js'%}"></script>
+<script type="text/javascript" src="{% static 'scripts/locale-all.js'%}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 
@@ -33,6 +33,11 @@
           title: 'Meeting',
           start: '2018-05-10T10:30:00',
           end: '2018-05-10T12:30:00'
+ }, {
+          title: 'Meeting2',
+          start: '2018-05-04T10:30:00',
+          end: '2018-05-04T12:30:00',
+              color: 'green'
  }
       ]
     });
@@ -157,14 +162,18 @@ table, th, td {
               <th>Fecha de Préstamo</th>
               <th>Fecha de Solicitud</th>
           </tr>
-          <tr>
-              <td><input type="checkbox"></td>
-              <td style="width:20px">ID</td>
-              <td>Artículo</td>
-              <td>Usuario</td>
-              <td>Fecha de Préstamo</td>
-              <td>Fecha de Solicitud</td>
-          </tr>
+          {% for prest in prestamos %}
+              {% if prest.estado == 0%}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.id}}"></td>
+                  <td style="width:20px">{{prest.id}}</td>
+                  <td>{{prest.id_articulo}}</td>
+                  <td>{{prest.id_usuario }}</td>
+                  <td>{{prest.fecha_inicio }}</td>
+                  <td>{{ prest.fecha_termino }}</td>
+              </tr>
+              {%  endif %}
+          {%  endfor %}
       </table>
           </div>
 
@@ -176,7 +185,7 @@ table, th, td {
                     </div>
                     <hr>
 
-              <!--- tabla con articulos !-->
+              <!--- tabla con pedidos !-->
       <table align="right">
           <tr>
 
@@ -187,6 +196,7 @@ table, th, td {
               <th>Fecha de Préstamo</th>
               <th>Estado</th>
           </tr>
+
           <tr>
               <td><input type="checkbox"></td>
               <td style="width:20px">ID</td>
