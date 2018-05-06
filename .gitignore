@@ -42,3 +42,4 @@ tmtagsHistory
 .bundle
 
 __pycache__
+migrations/

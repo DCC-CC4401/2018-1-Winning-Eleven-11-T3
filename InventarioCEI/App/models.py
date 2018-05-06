@@ -7,3 +7,6 @@ class Articulo(models.Model):
     estado = models.CharField(max_length=10)
     solicitudes = models.IntegerField(default=0)
     imagen = models.ImageField(upload_to="img", default='img/none.png')
+
+    def __str__(self):
+        return self.nombre
