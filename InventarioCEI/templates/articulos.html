@@ -2,12 +2,38 @@
 {% load static %}
 {% block title %}CEI - Artículos{% endblock %}
 {% block body %}
+    <div class="container">
     {% if populares %}
-        <ul>
-        {% for articulo in populares %}
-            <li><img src="/media/img/none.png"></li>
-            <li><img src="{% get_media_prefix %}{{ articulo.imagen }}"></li>
-        {% endfor %}
-        </ul>
+        <div class="row border-bottom">
+        <div class="col"><h2>Top Pedidos</h2></div>
+        </div>
+        <div class="row">
+            {% for articulo in populares %}
+                <div class="col">
+                    <a href="#">
+                        <div class="card" style="width: 195px;margin-top:10px;">
+                        <img class="card-img-top" src="{% get_media_prefix %}{{ articulo.imagen }}" style="width:195px;height:100px;">
+                        <div class="card-body" style="padding-top:0;padding-bottom:0;padding-left:8px;">
+                            {% if articulo.estado == "Disponible" %}
+                                <svg width="10" height="10">
+                                    <circle cx="5" cy="5" r="5" fill="green" style="display:inline-block;"/>
+                                </svg>
+                            {% elif articulo.estado == "En prestamo" %}
+                                <svg width="10" height="10">
+                                    <circle cx="5" cy="5" r="5" fill="yellow" style="display:inline-block;"/>
+                                </svg>
+                            {% else %}
+                                <svg width="10" height="10">
+                                    <circle cx="5" cy="5" r="5" fill="red" style="display:inline-block;"/>
+                                </svg>
+                            {% endif %}
+                        {{ articulo.nombre }}
+                        </div>
+                        </div>
+                     </a>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
+    </div>
 {% endblock %}
