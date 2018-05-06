@@ -13,7 +13,6 @@
 
   $(document).ready(function() {
     var LocalCode = 'es-do';
-
     $('#calendar').fullCalendar({
       header: {
         left: 'prevMonth, prev',
@@ -25,21 +24,19 @@
       weekends: false,
       minTime: '09:00:00',
       maxTime: '18:00:00',
-        aspectRatio: 3.5,
+      aspectRatio: 3.6,
       allDaySlot: false,
       editable: false,
-      events: [
-          {
-          title: 'Meeting',
-          start: '2018-05-10T10:30:00',
-          end: '2018-05-10T12:30:00'
- }, {
-          title: 'Meeting2',
-          start: '2018-05-04T10:30:00',
-          end: '2018-05-04T12:30:00',
-              color: 'green'
- }
+      events: [ {% for res in reservas %}
+               {
+              title: '{{ res.title }}',
+              start: '{{ res.start }}',
+              end: '{{ res.end }}',
+              color: '{{ res.color }}'
+            },
+          {% endfor %}
       ]
+
     });
 
   });
@@ -62,6 +59,15 @@
 </style>
 
 <style>
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 20px;
+}
+
 .EqualColumn {
     float: left;
     width: 45%;
@@ -141,6 +147,13 @@ table, th, td {
   </div>
   <div class="column right">
             <div id="calendar"></div>
+    <div align="center" style="margin-bottom: 50px">
+        {% for esp in espacios %}
+
+            <input type="radio">{{ esp }} <span class="dot" style="background-color: {{ esp.color_calendario }}"></span>
+
+        {% endfor %}
+    </div>
       <div class="row">
           <div class="EqualColumn" style="margin-left: 20px;">
               <div align="left" style="position:fixed; margin-bottom: 20px"><h3>Pendientes</h3></div>

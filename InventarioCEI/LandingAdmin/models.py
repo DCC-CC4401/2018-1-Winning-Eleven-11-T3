@@ -29,3 +29,18 @@ class Prestamo(models.Model):
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     estado = models.IntegerField()
 
+
+class Espacio(models.Model):
+    nombre = models.CharField(max_length=50)
+    capacidad = models.IntegerField()
+    color_calendario = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.nombre
+
+
+class Reserva(models.Model):
+    id_espacio = models.ForeignKey(Espacio, on_delete=models.CASCADE)
+    fecha_inicio = models.DateTimeField()
+    fecha_termino = models.DateTimeField()
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
