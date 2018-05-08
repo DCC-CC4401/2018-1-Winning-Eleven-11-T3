@@ -10,7 +10,7 @@
 
 .EqualColumn {
     float: left;
-    width: 45%;
+    width: 50%;
 }
 
 * {
@@ -41,19 +41,19 @@
     clear: both;
 }
 
-
-table {
-    border-collapse: collapse;
-    margin-left: auto;
-    margin-left: auto;
-    width: 100%;
-}
-
-table, th, td {
-    border: 1px solid black;
-}
-
 #calendar {
   max-weidth: 800px;
   margin: 0 auto;
+}
+
+.btn-link2{
+  border:none;
+  outline:none;
+  background:none;
+  cursor:pointer;
+  color:#0000EE;
+  padding:0;
+  text-decoration:underline;
+  font-family:inherit;
+  font-size:inherit;
 }
