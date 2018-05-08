@@ -1,0 +1,43 @@
+{% extends "navbar.html" %}
+{% load static %}
+
+
+
+
+{% block body %}
+<head>
+
+<style>
+estado {
+    border-radius: 10px;
+    margin: 20px;
+    padding: 5px;
+    background-color: green;
+}
+</style>
+
+
+
+</head>
+
+
+    <table style="margin-top:50px; margin-left:150px;">
+    <col width="400">
+  <tr>
+    <th>   {% block title %} <h2>{{ anItem.nombre }} <estado> <font color="white">{{ anItem.estado }} </font> </estado> </h2> {% endblock %}           </th>
+    <th></th>
+  </tr>
+  <tr>
+    <td> <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}"  width="400" height="400"   >  </p>     </td>
+    <td>  datepicker   </td>
+  </tr>
+  <tr>
+    <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> mesa.description mesa.description mesa.description mesa.description mesa.description</p>       </td>
+    <td> ultimos prestamos </td>
+  </tr>
+</table>
+
+
+
+
+{% endblock %}
