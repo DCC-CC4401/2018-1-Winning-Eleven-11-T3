@@ -3,10 +3,11 @@
 <html lang="es">
 <meta charset='utf-8' />
 <link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+<link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
 <script type="text/javascript" src="{% static 'scripts/lib/moment.min.js'%}"></script>
 <script type="text/javascript" src="{% static 'scripts/lib/jquery.min.js'%}"></script>
 
-<script type="text/javascript" src="{% static 'scripts/custom.js'%}"></script>
+<script type="text/javascript" src="{% static 'scripts/customCalendar.js'%}"></script>
 <script type="text/javascript" src="{% static 'scripts/locale-all.js'%}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
@@ -39,87 +40,20 @@
 
     });
 
+
+    $('input[type=checkbox]').on('click', function() {
+            $(this).closest("form").submit();
+    });
   });
 
 </script>
-<style>
 
-  body {
-    margin: 40px 10px;
-    padding: 0;
-    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-    font-size: 14px;
-  }
-
-  #calendar {
-      max-weidth: 800px;
-    margin: 0 auto;
-  }
-
-</style>
-
-<style>
-
-.dot {
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 20px;
-}
-
-.EqualColumn {
-    float: left;
-    width: 45%;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-.menuButton{
-    margin-bottom: 50px;
-}
-/* Create two unequal columns that floats next to each other */
-.column {
-    float: left;
-    padding: 10px;
-}
-
-.left {
-  margin-left: 100px;
-  width: 10%;
-}
-
-.right {
-  margin-right: 100px;
-  width: 70%;
-}
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-table {
-    border-collapse: collapse;
-    margin-left: auto;
-    margin-left: auto;
-    width: 100%;
-}
-
-table, th, td {
-    border: 1px solid black;
-}
-
-</style>
 <!---------->
 
 
 <head>
     <meta charset="UTF-8">
-    <title>Not U-Cursos</title>
+    <title>Not U-Cursos - {{ filtroEspacio }}</title>
 </head>
 <body>
 <div class="row">
@@ -148,11 +82,13 @@ table, th, td {
   <div class="column right">
             <div id="calendar"></div>
     <div align="center" style="margin-bottom: 50px">
+        <form method="POST">
         {% for esp in espacios %}
-
-            <input type="radio">{{ esp }} <span class="dot" style="background-color: {{ esp.color_calendario }}"></span>
+            {% csrf_token %}
+            <input type="checkbox" name="optcheck{{ esp.id }}" value="{{ esp.id }}" {% if esp.id in filtroEspacio %}checked="checked"{% endif %}> {{ esp }} <span class="dot" style="background-color: {{ esp.color_calendario }}"></span>
 
         {% endfor %}
+        </form>
     </div>
       <div class="row">
           <div class="EqualColumn" style="margin-left: 20px;">
