@@ -22,29 +22,7 @@ def index(request):
                 }
                 reservas_list.append(reserva_dic)
 
-    prestamos_filtrados=[]
-    if request.method == 'POST':
-        if request.POST.get('todos', False):
-            for prestamos in total_prestamos:
-                prestamos_filtrados.append(prestamos)
-        elif request.POST.get('vigentes', False):
-            for prestamos in total_prestamos:
-                if prestamos.estado == "Vigente":
-                    prestamos_filtrados.append(prestamos)
-        elif request.POST.get('caducados', False):
-            for prestamos in total_prestamos:
-                if prestamos.estado == "Caducado":
-                    prestamos_filtrados.append(prestamos)
-        elif request.POST.get('perdidos', False):
-            for prestamos in total_prestamos:
-                if prestamos.estado == "Perdido":
-                    prestamos_filtrados.append(prestamos)
-        else:
-            prestamos_filtrados=total_prestamos
-    else:
-        prestamos_filtrados = total_prestamos
-    return render(request, 'landingAdmin/index.html', {'prestamos': Prestamo.objects.all(),
-                                                       'prestamosFiltrados': prestamos_filtrados,
+    return render(request, 'landingAdmin/index.html', {'prestamos': total_prestamos,
                                                        'articulos': Articulo.objects.all(),
                                                        'reservas': reservas_list,
                                                        'filtroEspacio': filtro_espacio})

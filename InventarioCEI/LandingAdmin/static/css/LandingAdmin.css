@@ -10,7 +10,7 @@
 
 .EqualColumn {
     float: left;
-    width: 50%;
+    width: 45%;
 }
 
 * {
@@ -42,18 +42,15 @@
 }
 
 #calendar {
-  max-weidth: 800px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.btn-link2{
-  border:none;
-  outline:none;
-  background:none;
-  cursor:pointer;
-  color:#0000EE;
-  padding:0;
-  text-decoration:underline;
-  font-family:inherit;
-  font-size:inherit;
+.filter{
+    display: inline;
+    align-content: right;
+}
+
+.table{
+    table-layout: fixed;
 }

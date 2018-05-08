@@ -29,7 +29,7 @@
       weekends: false,
       minTime: '09:00:00',
       maxTime: '18:00:00',
-      aspectRatio: 3.6,
+      aspectRatio: 1.7,
       allDaySlot: false,
       editable: false,
       events: [ {% for res in reservas %}
@@ -48,6 +48,22 @@
     $('input[type=checkbox]').on('click', function() {
             $(this).closest("form").submit();
     });
+
+     var filtrarTodos = document.getElementById("filtrarTodos");
+     var filtrarVigentes = document.getElementById("filtrarVigentes");
+     var filtrarCaducados = document.getElementById("filtrarCaducados");
+     var filtrarPerdidos = document.getElementById("filtrarPerdidos");
+     var tablaTodos = document.getElementById("mostrar_filtrarTodos");
+     var tablaVigentes = document.getElementById("mostrar_filtrarVigentes");
+     var tablaCaducados = document.getElementById("mostrar_filtrarCaducados");
+     var tablaPerdidos = document.getElementById("mostrar_filtrarPerdidos");
+
+     $('a').on('click', function(e) {
+         var id= $(this).attr('id');
+         var tabla = document.getElementById("mostrar_"+id.toString());
+         $(".filter").hide();
+         tabla.setAttribute("style", "display:inline")
+     });
 
   });
 </script>
@@ -73,7 +89,7 @@
   <div class="column left">
       <table>
         <tr>
-            <div style="font-size: 50px" class="menuButton" name="user" value=""><i class="fa fa-user"></i></div>
+            <div style="font-size: 50px;" class="menuButton" name="user" value=""><i class="fa fa-user"></i></div>
         </tr>
         <tr>
             <div style="font-size: 50px" class="menuButton" name="cart" value=""><i class="fa fa-shopping-cart"></i></div>
@@ -93,10 +109,10 @@
             <input type="checkbox" name="optcheck{{ art.id }}" value="{{ art.id }}" {% if art.id in filtroEspacio %}checked="checked"{% endif %}> {{ art }} <span class="dot" style="background-color: {{ art.color_calendario }}"></span>
             {% endif %}
         {% endfor %}
-
+        </form>
     </div>
       <div class="row">
-          <div class="EqualColumn" style="margin-left: 20px;">
+          <div class="EqualColumn" style="margin-left: 20px; margin-right:50px">
             <p>
             <h3 style="display: inline; float: left">Pendientes</h3>
             <span style="float:right; margin-left: 20px"> <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
@@ -104,15 +120,15 @@
             </p><br>
                     <hr>
               <!--- tabla con articulos !-->
-      <table class="table" align="left" style="white-space: nowrap; font-size: small">
+      <table class="table" align="left" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th></th>
-              <th>ID</th>
-              <th>Artículo</th>
-              <th>Usuario</th>
-              <th>Fecha de Préstamo</th>
-              <th>Fecha de Solicitud</th>
+              <th style="width: 4%"></th>
+              <th style="width: 6%">ID</th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 20%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 25%"> Fecha de Solicitud</th>
           </tr>
           </thead>
           <tbody>
@@ -120,60 +136,144 @@
               {% if prest.estado == "Pendiente"%}
               <tr>
                   <td><input type="checkbox" value="{{prest.id}}"></td>
-                  <td style="width:20px">{{prest.id}}</td>
+                  <td>{{prest.id}}</td>
                   <td>{{prest.id_articulo}}</td>
                   <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio }}</td>
-                  <td>{{ prest.fecha_termino }}</td>
+                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i'  }}</td>
+                  <td>{{ prest.fecha_termino|date:'d/m/Y H:i'  }}</td>
               </tr>
               {%  endif %}
           {%  endfor %}
           </tbody>
       </table>
           </div>
-
-          <div class="EqualColumn" align="right" style="margin-right: 20px; margin-left: 20px">
+          <div class="EqualColumn" align="right" style="margin-right: 20px">
 
 
             <p>
             <h3 style="display: inline; float: left">Pedidos</h3>
-            {% csrf_token %}
-                <button type="submit" name="todos" value="todos" class="btn-link" style="font-size: small">Todos</button>
-                <button type="submit" name="vigentes" value="vigentes" class="btn-link" style="font-size: small">Vigentes</button>
-                <button type="submit" name="caducados" value="caducados" class="btn-link" style="font-size: small">Caducados</button>
-                <button type="submit" name="perdidos" value="perdidos" class="btn-link" style="font-size: small">Perdidos</button>
-            </form>
+              <div style="display:inline; font-size: small; margin-top: 20px">
+                <a href="javascript:void(0)" id="filtrarTodos">Todos</a>
+                <a href="javascript:void(0)" id="filtrarVigentes">Vigentes</a>
+                <a href="javascript:void(0)" id="filtrarCaducados">Caducados</a>
+                <a href="javascript:void(0)" id="filtrarPerdidos">Perdidos</a>
+            </div>
             <span style="float:right; margin-left: 20px"> <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
                         <i class="fa fa-times-circle" style="color: red; font-size: 30px" ></i></span>
             </p>
                     <hr>
 
               <!--- tabla con pedidos !-->
-          <table class="table" align="right" style="white-space: nowrap; font-size: small">
+            <div class="filter" id="mostrar_filtrarTodos">
+<table class="table" align="right" style="font-size: small">
           <thead class="thead-light">
           <tr>
-
-              <th> </th>
-              <th>ID</th>
-              <th>Artículo</th>
-              <th>Usuario</th>
-              <th>Fecha de Préstamo</th>
-              <th>Estado</th>
+              <th style="width: 4%"> </th>
+              <th style="width: 6%">ID</th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
           </tr>
           </thead>
           <tbody>
-              {% for prest in prestamosFiltrados %}
+          {% for prest in prestamos %}
               <tr>
                   <td><input type="checkbox" value="{{prest.id}}"></td>
                   <td style="width:20px">{{prest.id}}</td>
                   <td>{{prest.id_articulo}}</td>
                   <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio }}</td>
+                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
                   <td>{{ prest.estado }}</td>
               </tr>
           {%  endfor %}
           </tbody>
       </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarVigentes">
+     <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 4%"> </th>
+              <th style="width: 6%">ID</th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in prestamos %}
+                  {% if prest.estado == "Vigente" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.id}}"></td>
+                  <td style="width:20px">{{prest.id}}</td>
+                  <td>{{prest.id_articulo}}</td>
+                  <td>{{prest.id_usuario }}</td>
+                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarCaducados">
+        <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 4%"> </th>
+              <th style="width: 6%">ID</th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in prestamos %}
+                  {% if prest.estado == "Caducado" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.id}}"></td>
+                  <td style="width:20px">{{prest.id}}</td>
+                  <td>{{prest.id_articulo}}</td>
+                  <td>{{prest.id_usuario }}</td>
+                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarPerdidos">
+        <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 4%"> </th>
+              <th style="width: 6%">ID</th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in prestamos %}
+                  {% if prest.estado == "Perdido" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.id}}"></td>
+                  <td style="width:20px">{{prest.id}}</td>
+                  <td>{{prest.id_articulo}}</td>
+                  <td>{{prest.id_usuario }}</td>
+                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
           </div>
       </div>
 
