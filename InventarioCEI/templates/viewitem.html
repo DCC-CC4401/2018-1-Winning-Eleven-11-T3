@@ -1,11 +1,14 @@
+
 {% extends "navbar.html" %}
+
 {% load static %}
+
+
 
 {% block body %}
 
 
 <head>
-
 
 <style>
 estado {
@@ -27,7 +30,21 @@ estado {
 
 
 
-    <table style="margin-top:50px; margin-left:150px;">
+
+<table align="center" >
+  <tr>
+
+
+
+
+
+
+
+
+
+    <td>
+
+            <table style="margin-top:50px;">
     <col width="400">
   <tr>
     <th>    <h2>{{ anItem.nombre }} <estado> <font color="white">{{ anItem.estado }} </font> </estado> </h2>          </th>
@@ -37,27 +54,62 @@ estado {
   <tr>
     <td> <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}"  width="400" height="400">  </p>  </td>
 
+  </tr>
+
+  <tr>
+    <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> mesa.description mesa.description mesa.description mesa.description mesa.description</p>       </td>
+    <td>  </td>
+  </tr>
+</table>
 
 
 
-      <td>
-          <!-- aqui debe haber una tabla con dos date time picker y un titulo -->
 
-          <table style="margin-left: 200px">
+
+
+    </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <td>
+
+
+
+
+          <table style="margin-left: 200px;">
               <tr>
-                  <th>Solicitar Reserva</th>
+                  <th style="line-height: 50px;">Solicitar Reserva</th>
               </tr>
 
 
 
               <tr>
-                  <td style="border: 1px solid black;border-collapse: collapse;padding: 50px;margin: 200px;">
+                  <td style="border: 1px solid black;border-collapse: collapse;padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px;margin: 200px;">
 
                       <div class="container">
 
         <div class="form-group">
            <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
+                 <label>Desde: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
                 <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -67,14 +119,20 @@ estado {
 
         <div class="form-group">
            <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
-                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+                <label>Hasta: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
                 <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
             </div>
         </div>
 
+
+                          <input type="submit" value="Pedir" class="button pull-right">
+
+
 </div>
+
+
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker7').datetimepicker();
@@ -91,25 +149,49 @@ estado {
 </script>
 
 
+
                   </td>
 
 
               </tr>
 
-              <tr> <td>  ultimos prestamos  </td> </tr>
+              <tr>
 
+                  <th style="padding-top: 50px">  Últimos Préstamos  </th>
+
+              </tr>
+
+              <tr>
+                  <td>
+                      <iframe  width="400" height="250" scrolling="yes">
+                      </iframe>
+                 </td>
+                </tr>
           </table>
+
+
+
+
     </td>
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
   </tr>
-  <tr>
-    <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> mesa.description mesa.description mesa.description mesa.description mesa.description</p>       </td>
-    <td>  </td>
-  </tr>
+
 </table>
 
 
