@@ -1,199 +1,127 @@
-
 {% extends "navbar.html" %}
-
 {% load static %}
-
-
-
 {% block body %}
 
+    <head>
+
+        <style>
+            estado {
+                border-radius: 10px;
+                margin: 20px;
+                padding: 5px;
+                background-color: green;
+            }
+        </style>
+    </head>
+
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment-with-locales.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+    <script src="https://rawgit.com/tempusdominus/bootstrap-4/master/build/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link href="https://rawgit.com/tempusdominus/bootstrap-4/master/build/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<head>
 
-<style>
-estado {
-    border-radius: 10px;
-    margin: 20px;
-    padding: 5px;
-    background-color: green;
-}
-</style>
-</head>
+    <table align="center" >
+        <tr>
 
-<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment-with-locales.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-<script src="https://rawgit.com/tempusdominus/bootstrap-4/master/build/js/tempusdominus-bootstrap-4.min.js"></script>
-<link href="https://rawgit.com/tempusdominus/bootstrap-4/master/build/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <td>
+                <table style="margin-top:50px;">
+                    <col width="400">
+                    <tr>
+                        <th> <h2>{{ anItem.nombre }} <estado> <font color="white">{{ anItem.estado }} </font> </estado> </h2>  </th>
+                        <th></th>
+                    </tr>
 
+                    <tr>
+                        <td> <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}"  width="400" height="400">  </p>  </td>
+                    </tr>
 
+                    <tr>
+                        <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> mesa.description mesa.description mesa.description mesa.description mesa.description</p>       </td>
+                        <td>  </td>
+                    </tr>
+                </table>
+            </td>
 
 
-<table align="center" >
-  <tr>
+            <td>
+                <table style="margin-left: 200px;">
+                    <tr>
+                        <th style="line-height: 50px;">Solicitar Reserva</th>
+                    </tr>
 
+                    <tr>
+                        <td style="border: 1px solid black;border-collapse: collapse;padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px;margin: 200px;">
 
+                            <div class="container">
 
+                                <div class="form-group">
+                                    <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+                                        <label>Desde: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
+                                        <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="form-group">
+                                    <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                                        <label>Hasta: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+                                        <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <input type="submit" value="Pedir" class="button pull-right">
 
+                            </div>
 
+                            <script type="text/javascript">
+                                $(function () {
+                                    $('#datetimepicker7').datetimepicker();
+                                    $('#datetimepicker8').datetimepicker({
+                                        useCurrent: false
+                                    });
+                                    $("#datetimepicker7").on("change.datetimepicker", function (e) {
+                                        $('#datetimepicker8').datetimepicker('minDate', e.date);
+                                    });
+                                    $("#datetimepicker8").on("change.datetimepicker", function (e) {
+                                        $('#datetimepicker7').datetimepicker('maxDate', e.date);
+                                    });
+                                });
 
+                            </script>
 
-    <td>
+                        </td>
 
-            <table style="margin-top:50px;">
-    <col width="400">
-  <tr>
-    <th>    <h2>{{ anItem.nombre }} <estado> <font color="white">{{ anItem.estado }} </font> </estado> </h2>          </th>
-    <th></th>
-  </tr>
+                    </tr>
 
-  <tr>
-    <td> <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}"  width="400" height="400">  </p>  </td>
+                    <tr>
 
-  </tr>
+                        <th style="padding-top: 50px">  Últimos Préstamos  </th>
 
-  <tr>
-    <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> mesa.description mesa.description mesa.description mesa.description mesa.description</p>       </td>
-    <td>  </td>
-  </tr>
-</table>
+                    </tr>
 
+                    <tr>
 
+                        <td>
 
+                            <iframe  width="400" height="250" scrolling="yes">
 
+                            </iframe>
+                        </td>
+                    </tr>
 
+                </table>
 
-    </td>
+            </td>
 
+        </tr>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <td>
-
-
-
-
-          <table style="margin-left: 200px;">
-              <tr>
-                  <th style="line-height: 50px;">Solicitar Reserva</th>
-              </tr>
-
-
-
-              <tr>
-                  <td style="border: 1px solid black;border-collapse: collapse;padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px;margin: 200px;">
-
-                      <div class="container">
-
-        <div class="form-group">
-           <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
-                 <label>Desde: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
-                <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-           <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
-                <label>Hasta: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
-                <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-            </div>
-        </div>
-
-
-                          <input type="submit" value="Pedir" class="button pull-right">
-
-
-</div>
-
-
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker7').datetimepicker();
-        $('#datetimepicker8').datetimepicker({
-            useCurrent: false
-        });
-        $("#datetimepicker7").on("change.datetimepicker", function (e) {
-            $('#datetimepicker8').datetimepicker('minDate', e.date);
-        });
-        $("#datetimepicker8").on("change.datetimepicker", function (e) {
-            $('#datetimepicker7').datetimepicker('maxDate', e.date);
-        });
-    });
-</script>
-
-
-
-                  </td>
-
-
-              </tr>
-
-              <tr>
-
-                  <th style="padding-top: 50px">  Últimos Préstamos  </th>
-
-              </tr>
-
-              <tr>
-                  <td>
-                      <iframe  width="400" height="250" scrolling="yes">
-                      </iframe>
-                 </td>
-                </tr>
-          </table>
-
-
-
-
-    </td>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </tr>
-
-</table>
-
+    </table>
 
 
 
