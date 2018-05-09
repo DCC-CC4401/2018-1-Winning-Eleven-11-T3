@@ -7,7 +7,7 @@ from random import randint
 class Prestables(models.Model):
 
     #falta resolver el ID, si usar randint o uuid
-    id =  models.IntegerField(primary_key=True, default=randint(10000000,99999999), editable=False)
+    id = models.BigAutoField(primary_key=True)
 
     opciones = (
         ("Disponible", "Disponible"),
@@ -22,6 +22,15 @@ class Prestables(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def save(self):
+        if not self.id:
+            is_unique = False
+            while not is_unique:
+                id = randint(1000000000, 1999999999)  # 19 digits: 1, random 18 digits
+                is_unique = (Prestables.objects.filter(id=id).count() == 0)
+            self.id = id
+        super(Prestables, self).save()
 
 # Para espacios, detalle de la cantidad de asistentes maxima
 class Aforo(models.Model):
@@ -46,12 +55,21 @@ class Solicitudes(models.Model):
         ("Rechazada", "Rechazada"),
     )
 
-    id = models.IntegerField(primary_key=True, default=randint(10000000,99999999), editable=False)
+    id = models.BigAutoField(primary_key=True)
     tiempo_inicio = models.DateTimeField
     tiempo_final = models.DateTimeField
     rut_per = models.ForeignKey(Profile, on_delete=models.CASCADE)
     id_obj = models.ForeignKey(Prestables, on_delete=models.CASCADE)
     estado_sol = models.CharField(max_length=15, choices=opciones_sol)
+
+    def save(self):
+        if not self.id:
+            is_unique = False
+            while not is_unique:
+                id = randint(1000000000, 1999999999)  # 19 digits: 1, random 18 digits
+                is_unique = (Prestables.objects.filter(id=id).count() == 0)
+            self.id = id
+        super(Prestables, self).save()
 
 
 # Prestamos, solicitudes aceptadas
