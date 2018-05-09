@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from random import randint
 
 # Clase prestables, pueden ser articulos o salas
 class Prestables(models.Model):
 
     #falta resolver el ID, si usar randint o uuid
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id =  models.IntegerField(primary_key=True, default=randint(10000000,99999999), editable=False)
 
     opciones = (
         ("Disponible", "Disponible"),
@@ -45,7 +46,7 @@ class Solicitudes(models.Model):
         ("Rechazada", "Rechazada"),
     )
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.IntegerField(primary_key=True, default=randint(10000000,99999999), editable=False)
     tiempo_inicio = models.DateTimeField
     tiempo_final = models.DateTimeField
     rut_per = models.ForeignKey(Profile, on_delete=models.CASCADE)
