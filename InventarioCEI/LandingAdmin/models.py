@@ -35,6 +35,7 @@ class Prestamo(models.Model):
     opciones = (
         ("Pendiente", "Pendiente"),
         ("Vigente", "Vigente"),
+        ("Rechazado", "Rechazado"),
         ("Caducado", "Caducado"),
         ("Perdido", "Perdido")
     )

@@ -29,7 +29,7 @@
       weekends: false,
       minTime: '09:00:00',
       maxTime: '18:00:00',
-      aspectRatio: 1.7,
+      aspectRatio: 2.7,
       allDaySlot: false,
       editable: false,
       events: [ {% for res in reservas %}
@@ -45,18 +45,9 @@
     });
 
 
-    $('input[type=checkbox]').on('click', function() {
-            $(this).closest("form").submit();
+    $('input[class=boxEspacios]').on('click', function() {
+         $(this).closest("form").submit();
     });
-
-     var filtrarTodos = document.getElementById("filtrarTodos");
-     var filtrarVigentes = document.getElementById("filtrarVigentes");
-     var filtrarCaducados = document.getElementById("filtrarCaducados");
-     var filtrarPerdidos = document.getElementById("filtrarPerdidos");
-     var tablaTodos = document.getElementById("mostrar_filtrarTodos");
-     var tablaVigentes = document.getElementById("mostrar_filtrarVigentes");
-     var tablaCaducados = document.getElementById("mostrar_filtrarCaducados");
-     var tablaPerdidos = document.getElementById("mostrar_filtrarPerdidos");
 
      $('a').on('click', function(e) {
          var id= $(this).attr('id');
@@ -106,17 +97,23 @@
         {% for art in articulos %}
             {% if art.espacio %}
             {% csrf_token %}
-            <input type="checkbox" name="optcheck{{ art.id }}" value="{{ art.id }}" {% if art.id in filtroEspacio %}checked="checked"{% endif %}> {{ art }} <span class="dot" style="background-color: {{ art.color_calendario }}"></span>
+            <input class="boxEspacios" type="checkbox" name="optcheck{{ art.id }}" value="{{ art.id }}" {% if art.id in filtroEspacio %}checked="checked"{% endif %}> {{ art }} <span class="dot" style="background-color: {{ art.color_calendario }}"></span>
             {% endif %}
         {% endfor %}
         </form>
     </div>
       <div class="row">
+
           <div class="EqualColumn" style="margin-left: 20px; margin-right:50px">
+           <form method="POST">
             <p>
             <h3 style="display: inline; float: left">Pendientes</h3>
-            <span style="float:right; margin-left: 20px"> <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
-                        <i class="fa fa-times-circle" style="color: red; font-size: 30px" ></i></span>
+
+                      {% csrf_token %}
+              <span style="float:right; margin-left: 20px; font-size: 30px">
+                  <button type="submit" class="btn-none" name="aceptarPedidos"><i class="fa fa-check-circle"></i></button>
+                  <button type="submit" class="btn-none" name="rechazarPedidos"><i class="fa fa-times-circle"></i></button>
+              </span>
             </p><br>
                     <hr>
               <!--- tabla con articulos !-->
@@ -135,31 +132,32 @@
           {% for prest in prestamos %}
               {% if prest.estado == "Pendiente"%}
               <tr>
-                  <td><input type="checkbox" value="{{prest.id}}"></td>
+                  <td><input type="checkbox" name='checkedPend[]' value="{{prest.id}}"></td>
                   <td>{{prest.id}}</td>
                   <td>{{prest.id_articulo}}</td>
                   <td>{{prest.id_usuario }}</td>
                   <td>{{prest.fecha_inicio|date:'d/m/Y H:i'  }}</td>
-                  <td>{{ prest.fecha_termino|date:'d/m/Y H:i'  }}</td>
+                  <td>{{prest.fecha_termino|date:'d/m/Y H:i'  }}</td>
               </tr>
               {%  endif %}
           {%  endfor %}
           </tbody>
       </table>
+          </form>
           </div>
           <div class="EqualColumn" align="right" style="margin-right: 20px">
 
 
             <p>
             <h3 style="display: inline; float: left">Pedidos</h3>
-              <div style="display:inline; font-size: small; margin-top: 20px">
-                <a href="javascript:void(0)" id="filtrarTodos">Todos</a>
-                <a href="javascript:void(0)" id="filtrarVigentes">Vigentes</a>
-                <a href="javascript:void(0)" id="filtrarCaducados">Caducados</a>
-                <a href="javascript:void(0)" id="filtrarPerdidos">Perdidos</a>
+              <div style="display:inline; font-size: small">
+                <a href="javascript:void(0)" id="filtrarTodos" style="margin-right: 5px">Todos</a>
+                <a href="javascript:void(0)" id="filtrarVigentes" style="margin-right: 5px">Vigentes</a>
+                <a href="javascript:void(0)" id="filtrarCaducados" style="margin-right: 5px">Caducados</a>
+                <a href="javascript:void(0)" id="filtrarPerdidos" style="margin-right: 5px">Perdidos</a>
             </div>
-            <span style="float:right; margin-left: 20px"> <i class="fa fa-check-circle" style="color: limegreen; font-size: 30px; margin-right: 5px"></i>
-                        <i class="fa fa-times-circle" style="color: red; font-size: 30px" ></i></span>
+            <span style="float:right; margin-left: 20px; font-size: 30px"> <i class="fa fa-check-circle" ></i>
+                        <i class="fa fa-times-circle"></i></span>
             </p>
                     <hr>
 
