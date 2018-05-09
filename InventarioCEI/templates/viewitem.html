@@ -5,14 +5,27 @@
     <head>
 
         <style>
+
+            :root {
+                --footer-color: green;
+            }
+
             estado {
                 border-radius: 10px;
                 margin: 20px;
                 padding: 5px;
-                background-color: green;
+                background-color: var(--footer-color);
             }
+
+
         </style>
+
+
+
     </head>
+
+
+
 
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -30,7 +43,7 @@
                 <table style="margin-top:50px;">
                     <col width="400">
                     <tr>
-                        <th> <h2>{{ anItem.nombre }} <estado> <font color="white">{{ anItem.estado }} </font> </estado> </h2>  </th>
+                        <th> <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>  </th>
                         <th></th>
                     </tr>
 
@@ -44,6 +57,19 @@
                     </tr>
                 </table>
             </td>
+
+            <script>
+                var estado = document.getElementById("myEstado").innerText;
+                if(estado=="En reparacion") {
+                    document.documentElement.style.setProperty('--footer-color', 'blue');
+                }
+                else if(estado=="En prestamo"){
+                    document.documentElement.style.setProperty('--footer-color', 'red');
+                }
+                else if(estado=="Perdido"){
+                    document.documentElement.style.setProperty('--footer-color', 'black');
+                }
+            </script>
 
 
             <td>
