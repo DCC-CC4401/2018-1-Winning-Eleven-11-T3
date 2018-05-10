@@ -67,9 +67,9 @@ class Solicitudes(models.Model):
             is_unique = False
             while not is_unique:
                 id = randint(1000000000, 1999999999)  # 19 digits: 1, random 18 digits
-                is_unique = (Prestables.objects.filter(id=id).count() == 0)
+                is_unique = (Solicitudes.objects.filter(id=id).count() == 0)
             self.id = id
-        super(Prestables, self).save()
+        super(Solicitudes, self).save()
 
 
 # Prestamos, solicitudes aceptadas
