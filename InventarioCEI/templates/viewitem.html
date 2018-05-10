@@ -36,29 +36,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <table align="center" >
-        <tr>
+    <div class="container" align="center" style="margin-top:50px">
+        <div class="form-row">
+            <div class="form-group col">
 
-            <td>
-                <table style="margin-top:50px;">
-                    <col width="400">
-                    <tr>
-                        <th> <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>  </th>
-                        <th></th>
-                    </tr>
+                <div class="container">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
+                            </div>
 
-                    <tr>
-                        <td> <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}"  width="400" height="400">  </p>  </td>
-                    </tr>
+                    </div>
 
-                    <tr>
-                        <td>  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> {{ anItem.descripcion }} </p>       </td>
-                        <td>  </td>
-                    </tr>
-                </table>
-            </td>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="400" height="400">  </p>
+                            </div>
+                    </div>
 
-            <script>
+                    <div class="form-row">
+                        <div class="form-group col">  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> {{ anItem.descripcion }} </p>      </div>
+
+                    </div>
+                </div>
+                <script>
                 var estado = document.getElementById("myEstado").innerText;
                 if(estado=="En reparacion") {
                     document.documentElement.style.setProperty('--footer-color', 'blue');
@@ -72,15 +73,22 @@
             </script>
 
 
-            <td>
-                <table style="margin-left: 200px;">
-                    <tr>
-                        <th style="line-height: 50px;">Solicitar Reserva</th>
-                    </tr>
+            </div>
 
-                    <tr>
-                        <td style="border: 1px solid black;border-collapse: collapse;padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px;margin: 200px;">
 
+
+
+
+
+
+            <div class="form-group col" style="padding-left: 100px">
+
+                <div class="container" >
+                    <div class="form-row" style="padding-bottom: 20px" >
+                       <strong>Solicitar Reserva</strong>
+                    </div>
+
+                        <div class="form-row"  style=" background-color: #e9ecef;border: 1px solid black; padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px">
                             <div class="container">
 
                                 <div class="form-group">
@@ -121,33 +129,37 @@
 
                             </script>
 
-                        </td>
 
-                    </tr>
 
-                    <tr>
+                        </div>
 
-                        <th style="padding-top: 50px">  Últimos Préstamos  </th>
 
-                    </tr>
 
-                    <tr>
+                    <div class="form-row" style="padding-top: 100px; padding-bottom: 20px">
+                        <strong>Últimos Préstamos</strong>
+                    </div>
 
-                        <td>
 
-                            <iframe  width="400" height="250" scrolling="yes">
+                    <div class="form-row"  style=" border: 1px solid black; padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px">
+                        01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola
 
-                            </iframe>
-                        </td>
-                    </tr>
+                    </div>
+                </div>
 
-                </table>
 
-            </td>
 
-        </tr>
+            </div>
 
-    </table>
+
+
+
+
+
+        </div>
+
+
+    </div>
+
 
 
 
