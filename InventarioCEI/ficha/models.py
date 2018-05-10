@@ -58,6 +58,7 @@ class Solicitudes(models.Model):
     id = models.BigAutoField(primary_key=True)
     tiempo_inicio = models.DateTimeField
     tiempo_final = models.DateTimeField
+    tiempo_solicitud = models.DateTimeField
     rut_per = models.ForeignKey(Profile, on_delete=models.CASCADE)
     id_obj = models.ForeignKey(Prestables, on_delete=models.CASCADE)
     estado_sol = models.CharField(max_length=15, choices=opciones_sol)
