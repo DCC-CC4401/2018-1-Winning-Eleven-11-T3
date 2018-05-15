@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ClassroomConfig(AppConfig):
+class userSystemConfig(AppConfig):
     name = 'userSystem'
