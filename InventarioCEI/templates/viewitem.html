@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-    <head>
+ <head>
 
         <style>
 
@@ -20,6 +20,10 @@
 
         </style>
 
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 
     </head>
@@ -27,20 +31,12 @@
 
 
 
-    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment-with-locales.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
-    <script src="https://rawgit.com/tempusdominus/bootstrap-4/master/build/js/tempusdominus-bootstrap-4.min.js"></script>
-    <link href="https://rawgit.com/tempusdominus/bootstrap-4/master/build/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-    <div class="container" align="center" style="margin-top:50px">
+    <div class="container" align="center">
         <div class="form-row">
-            <div class="form-group col">
+            <div class="form-group col" style="max-width: 500px">
 
-                <div class="container">
+                <div class="container" style="max-width: 500px">
                     <div class="form-row">
                         <div class="form-group col">
                             <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
@@ -50,7 +46,7 @@
 
                     <div class="form-row">
                         <div class="form-group col">
-                            <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="400" height="400">  </p>
+                            <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
                             </div>
                     </div>
 
@@ -81,53 +77,59 @@
 
 
 
-            <div class="form-group col" style="padding-left: 100px">
+            <div class="form-group col" style=" padding-left: 100px">
 
                 <div class="container" >
-                    <div class="form-row" style="padding-bottom: 20px" >
-                       <strong>Solicitar Reserva</strong>
+
+                    <div class="form-row" style="padding-bottom: 10px; padding-top: 15px" >
+                       <h4><strong>Solicitar Reserva:</strong></h4>
+                    </div>
+
+                    <div class="form-row" align="left">
+                       Presione la casilla a continuación para indicar fecha y hora de inicio y término del préstamo.
                     </div>
 
                         <div class="form-row"  style=" background-color: #e9ecef;border: 1px solid black; padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px">
+
+
                             <div class="container">
 
-                                <div class="form-group">
-                                    <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
-                                        <label>Desde: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
-                                        <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
+
+                                <div class="form-row" style="padding-left: 100px" >
+
+                                    <input type="text" name="datetimes" style="min-width: 250px;" />
+
+
+
+
+                                    <script>
+                                        $('input[name="datetimes"]').daterangepicker({
+                                            timePicker: true,
+                                            startDate: moment().startOf('hour').add(2, 'hour'),
+                                            endDate: moment().startOf('hour').add(26, 'hour'),
+                                            locale: {
+                                                format: 'M/DD hh:mm A',
+                                                separator: " - ",
+                                                applyLabel: "Aceptar",
+                                                cancelLabel: "Cancelar",
+                                                fromLabel: "Desde",
+                                                toLabel: "Hasta",
+                                                daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                                                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                                                firstDay: 1
+                                            }
+                                        });
+
+                                    </script>
+
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
-                                        <label>Hasta: &ensp; </label> <input type="datetime" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
-                                        <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <input type="submit" value="Pedir" class="button pull-right">
 
                             </div>
 
-                            <script type="text/javascript">
-                                $(function () {
-                                    $('#datetimepicker7').datetimepicker();
-                                    $('#datetimepicker8').datetimepicker({
-                                        useCurrent: false
-                                    });
-                                    $("#datetimepicker7").on("change.datetimepicker", function (e) {
-                                        $('#datetimepicker8').datetimepicker('minDate', e.date);
-                                    });
-                                    $("#datetimepicker8").on("change.datetimepicker", function (e) {
-                                        $('#datetimepicker7').datetimepicker('maxDate', e.date);
-                                    });
-                                });
 
-                            </script>
 
 
 
@@ -135,13 +137,22 @@
 
 
 
-                    <div class="form-row" style="padding-top: 100px; padding-bottom: 20px">
-                        <strong>Últimos Préstamos</strong>
+                    <div class="form-row" style="padding-top: 30px; padding-bottom: 10px">
+                       <h4><strong>Últimos Préstamos:</strong></h4>
                     </div>
 
 
                     <div class="form-row"  style=" border: 1px solid black; padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px">
-                        01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola
+                       <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
 
                     </div>
                 </div>
@@ -159,7 +170,6 @@
 
 
     </div>
-
 
 
 
