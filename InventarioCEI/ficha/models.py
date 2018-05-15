@@ -34,16 +34,14 @@ class Prestables(models.Model):
 
 # Para espacios, detalle de la cantidad de asistentes maxima
 class Aforo(models.Model):
-    id = models.ForeignKey(Prestables, on_delete=models.CASCADE)
-    capacidad = models.IntegerField(primary_key=True)
+    espacio = models.OneToOneField(Prestables, on_delete=models.CASCADE, default=None)
+    capacidad = models.IntegerField(default=0)
 
 
 #esto es para extender el modelo de usuarios
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rut = models.IntegerField(primary_key=True,unique=True)
-
-    #lo puse como integer, al usuario se le pide sin puntos ni guion
+    rut = models.CharField(max_length=30,primary_key=True,unique=True)
 
 
 
@@ -59,15 +57,15 @@ class Solicitudes(models.Model):
     tiempo_inicio = models.DateTimeField
     tiempo_final = models.DateTimeField
     tiempo_solicitud = models.DateTimeField
-    rut_per = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    id_obj = models.ForeignKey(Prestables, on_delete=models.CASCADE)
+    persona = models.OneToOneField(Profile, on_delete=models.CASCADE, default=None)
+    prestable = models.OneToOneField(Prestables, on_delete=models.CASCADE, default=None)
     estado_sol = models.CharField(max_length=15, choices=opciones_sol)
 
     def save(self):
         if not self.id:
             is_unique = False
             while not is_unique:
-                id = randint(1000000000, 1999999999)  # 19 digits: 1, random 18 digits
+                id = randint(1000000000, 9999999999)  # 19 digits: 1, random 18 digits
                 is_unique = (Solicitudes.objects.filter(id=id).count() == 0)
             self.id = id
         super(Solicitudes, self).save()
@@ -82,6 +80,6 @@ class Prestamos(models.Model):
         ("Perdida", "Perdida"),
     )
 
-    id = models.OneToOneField(Solicitudes, on_delete=models.CASCADE,primary_key=True)
+    solicitud_aceptada = models.OneToOneField(Solicitudes, on_delete=models.CASCADE,primary_key=True)
     estado_sol = models.CharField(max_length=15, choices=opciones_pres)
 
