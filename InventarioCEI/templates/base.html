@@ -1,0 +1,134 @@
+<!doctype html>
+{% load static %}
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Inventario{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div>
+          <div class="row">
+            <div>
+              <h1 class="logo">
+                <a href="{% url 'home' %}">
+                  Sistema de Inventario
+                  {% if user.is_authenticated %}
+                    {% if user.is_teacher %}
+                      <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Teacher profile"></span>
+                    {% else %}
+                      <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
+                    {% endif %}
+                  {% endif %}
+                </a>
+              </h1>
+            </div>
+            <div class="col-lg text-right" style="line-height: 0.4em;">
+              {% if user.is_authenticated %}
+                  <table align="right" style="margin-top: 20px">
+                      <tr>
+                          <td>
+
+                              <table>
+                                  <tr >
+                                      <td>
+                                          <p align="right"><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+                                      </td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>
+                                          <p align="right">{{ user.rut }}</p>
+                                      </td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>
+                                          <p align="right">{{ user.email }}</p>
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+
+                          <td>
+                              <table>
+                                  <tr>
+                                      <td>
+                                          <p style="margin-left: 5px;"> <img src="{% static 'img/userlogo.png' %}" width="50" height="50">  </p>
+                                      </td>
+
+                                      <td>
+                                          <div class="dropdown" style="margin-left: 5px;border-collapse: collapse">
+                                              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                              <ul class="dropdown-menu">
+                                                  <li><a href="#">Ver perfil</a></li>
+                                                  <li class="divider"></li>
+                                                  <li> <a href="{% url 'logout' %}">Cerrar sesión</a> </li>
+                                              </ul>
+                                          </div>
+
+
+
+
+
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                  </table>
+
+
+
+
+
+
+
+
+
+              {% else %}
+                <a href="{% url 'login' %}" class="btn btn-light" role="button">Iniciar sesión</a>
+                <a href="{% url 'usuarios_signup' %}" class="btn btn-primary" role="button">Registrarse</a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+              {% block content %}
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script>
+  </body>
+</html>

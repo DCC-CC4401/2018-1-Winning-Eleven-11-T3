@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <head>
+
+        <style>
+
+            :root {
+                --footer-color: green;
+            }
+
+            estado {
+                border-radius: 10px;
+                margin: 20px;
+                padding: 5px;
+                background-color: var(--footer-color);
+            }
+
+
+        </style>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+    </head>
+
+
+
+
+
+    <div class="container" align="center">
+        <div class="form-row" align="center">
+            <div class="form-group col" style="max-width: 500px" align="center">
+                <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
+            </div>
+        </div>
+
+        <div class="form-row" align="center">
+            <div class="form-group col" style="max-width: 500px" align="center">
+                <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
+            </div>
+        </div>
+
+        <div class="form-row" align="center">
+            <div class="form-group col" style="max-width: 500px" align="center">
+                <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;" align="justify"> {{ anItem.descripcion }} </p>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    var estado = document.getElementById("myEstado").innerText;
+    if(estado=="En reparacion") {
+        document.documentElement.style.setProperty('--footer-color', 'blue');
+    }
+
+    else if(estado=="En prestamo"){
+        document.documentElement.style.setProperty('--footer-color', 'red');
+    }
+    else if(estado=="Perdido"){
+        document.documentElement.style.setProperty('--footer-color', 'black');
+    }
+</script>
+
+
+
+
+
+
+{% endblock %}
