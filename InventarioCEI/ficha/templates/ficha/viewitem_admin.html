@@ -18,6 +18,9 @@
             }
 
 
+
+
+
         </style>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -34,23 +37,59 @@
 
     <div class="container" align="center">
         <div class="form-row" align="center">
-            <div class="form-group col" style="max-width: 500px" align="center">
-                <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
+            <div class="form-group" style="max-width: 500px" align="center">
+                <h2><p id="elTitulo"> {{ anItem.nombre }} </p>  </h2>
+                <button onclick="editarTexto('elTitulo')">Habilitar edición</button>
+                <button onclick="guardarTexto('elTitulo')">Guardar</button>
+                </div>
+
+             <div class="form-group" style="max-width: 500px; padding-left: 60px;" align="center">
+                <h2><estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
+                 </div>
+             <div class="form-group" style="max-width: 500px" align="center">
+
+                 <div class="dropdown" style="margin-top: 15px;border-collapse: collapse">
+                                              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                              <ul class="dropdown-menu">
+                                                  <li><a href="#">Disponible</a></li>
+                                                  <li><a href="#">En Prestamo</a></li>
+                                                  <li><a href="#">En Reparacion</a></li>
+                                                  <li><a href="#">Perdido</a></li>
+                                              </ul>
+                                          </div>
             </div>
         </div>
 
         <div class="form-row" align="center">
             <div class="form-group col" style="max-width: 500px" align="center">
                 <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
+                <button style="position: absolute;bottom: 5%;right: 20%;transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);font-size: 14px;padding: 10px 10px;cursor: pointer;text-align: center;">
+                    Cambiar...</button>
             </div>
         </div>
 
         <div class="form-row" align="center">
             <div class="form-group col" style="max-width: 500px" align="center">
-                <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;" align="justify"> {{ anItem.descripcion }} </p>
+                <p id="laDescripcion" style="border-style: dashed solid;border-radius: 10px; padding: 5px;" align="justify"> {{ anItem.descripcion }} </p>
+                <button onclick="editarTexto('laDescripcion')">Habilitar edición</button>
+                <button onclick="guardarTexto('laDescripcion')">Guardar</button>
             </div>
+
+            <script>
+                var editarTexto = function(theId) {
+                    document.getElementById(theId).contentEditable = true;
+                }
+            </script>
+
+            <script>
+                var guardarTexto = function(theId) {
+                    document.getElementById(theId).contentEditable = false;
+                }
+            </script>
+
         </div>
     </div>
+
 
 
 
