@@ -23,10 +23,8 @@
 
         </style>
 
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 
 
     </head>
@@ -38,9 +36,12 @@
     <div class="container" align="center">
         <div class="form-row" align="center">
             <div class="form-group" style="max-width: 500px" align="center">
-                <h2><p id="elTitulo"> {{ anItem.nombre }} </p>  </h2>
-                <button onclick="editarTexto('elTitulo')">Habilitar edición</button>
-                <button onclick="guardarTexto('elTitulo')">Guardar</button>
+                <form method="post">
+                    {% csrf_token %}
+                    <h2><textarea id="elTitulo" value="{{ anItem.nombre }}">{{ anItem.nombre }} </textarea> </h2>
+                    <button onclick="guardarTitulo()">Guardar</button>
+                </form>
+
                 </div>
 
              <div class="form-group" style="max-width: 500px; padding-left: 60px;" align="center">
@@ -48,15 +49,18 @@
                  </div>
              <div class="form-group" style="max-width: 500px" align="center">
 
+                 <form method="post">
+                    {% csrf_token %}
                  <div class="dropdown" style="margin-top: 15px;border-collapse: collapse">
-                                              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                                              <button id="dropEstado" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
                                               <ul class="dropdown-menu">
-                                                  <li><a href="#">Disponible</a></li>
-                                                  <li><a href="#">En Prestamo</a></li>
-                                                  <li><a href="#">En Reparacion</a></li>
-                                                  <li><a href="#">Perdido</a></li>
+                                                  <li><a onclick="cambiarEstado('Disponible')" href="" >Disponible</a></li>
+                                                  <li><a onclick="cambiarEstado('En prestamo')" href="">En prestamo</a></li>
+                                                  <li><a onclick="cambiarEstado('En reparacion')" href="">En reparacion</a></li>
+                                                  <li><a onclick="cambiarEstado('Perdido')" href="">Perdido</a></li>
                                               </ul>
                                           </div>
+                     </form>
             </div>
         </div>
 
@@ -70,22 +74,98 @@
 
         <div class="form-row" align="center">
             <div class="form-group col" style="max-width: 500px" align="center">
-                <p id="laDescripcion" style="border-style: dashed solid;border-radius: 10px; padding: 5px;" align="justify"> {{ anItem.descripcion }} </p>
-                <button onclick="editarTexto('laDescripcion')">Habilitar edición</button>
-                <button onclick="guardarTexto('laDescripcion')">Guardar</button>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <textarea id="laDescripcion" contenteditable="true" style="min-width: 400px; min-height: 100px; border:2px dashed #555;border-radius: 10px; padding: 5px;" align="justify" value="{{ anItem.descripcion}}">{{ anItem.descripcion}} </textarea>
+
+                    <button onclick="guardarDescripcion()" >Guardar</button>
+                </form>
             </div>
 
+
+
+
+
+
+            <input type="hidden" id="idObjeto" value={{anItem.id}} />
+
+
             <script>
-                var editarTexto = function(theId) {
-                    document.getElementById(theId).contentEditable = true;
+                function guardarTitulo(){
+
+                    var itemId = document.getElementById("idObjeto").value ;
+                    var tituloNuevo = document.getElementById("elTitulo").value;
+
+                    $.ajax({
+                        url: '/articulos/ajax/guardar_titulo/',
+                        data: {
+                            'id': itemId,
+                            'nombre': tituloNuevo,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        type : "POST",
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data.a_message);
+                        }
+                    });
+
                 }
             </script>
 
+
             <script>
-                var guardarTexto = function(theId) {
-                    document.getElementById(theId).contentEditable = false;
+                function guardarDescripcion(){
+
+                    var itemId = document.getElementById("idObjeto").value ;
+                    var descripcionNueva = document.getElementById("laDescripcion").value;
+
+                    $.ajax({
+                        url: '/articulos/ajax/guardar_descripcion/',
+                        data: {
+                            'id': itemId,
+                            'descripcion': descripcionNueva,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        type : "POST",
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data.a_message);
+                        }
+                    });
+
                 }
             </script>
+
+
+
+            <script>
+                function cambiarEstado(nuevoEstado){
+
+                    var itemId = document.getElementById("idObjeto").value ;
+
+
+                    $.ajax({
+                        url: '/articulos/ajax/cambiar_estado/',
+                        data: {
+                            'id': itemId,
+                            'estado': nuevoEstado,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        type : "POST",
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data.a_message);
+                        }
+                    });
+
+                }
+            </script>
+
+
+
+
 
         </div>
     </div>
