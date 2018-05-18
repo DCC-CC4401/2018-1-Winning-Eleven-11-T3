@@ -1,8 +1,8 @@
-to-do list
-
-12.  La  reserva  de  cualquier  artículo  debe  realizarse  al menos  1  hora  antes  de  la  fecha/hora  de  inicio  del  préstamo.
-
-
-5.  El  sistema  debe  permitir  que  personas  naturales  realicen reservas  de  artículos.
-7.  El  sistema  debe  llevar  un  historial  de  las  reservas realizadas  por  una  persona  natural,  registrándose  el  usuario, fecha  y  hora  de  la  reserva.
-8.  El  sistema  debe  llevar  un  historial  de  los  préstamos autorizados  por  un  administrador,  registrándose  el  usuario, fecha  y  hora  del  préstamo.
+2018-1-Winning-Eleven-11-T3
+Interfaces (deben ser responsive)
+Landing page para personas naturales
+Perfil del usuario (vista por el dueño del perfil)
+Ficha de un articulo
+Landing page para administradores
+Requisitos que deben implementar en forma completa
+1-2, 4-5, 7-8, 12, 14-18, 23, 25-26, 28, 37-40, 51, 54-56.
