@@ -95,6 +95,11 @@
                        <h4><strong>Solicitar Reserva:</strong></h4>
                     </div>
 
+                    <form method="post">
+                        {% csrf_token %}
+
+
+
                         <div class="form-row"  style=" background-color: #e9ecef;border: 1px solid black; padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px">
 
 
@@ -107,7 +112,7 @@
 
                                     <div class="form-group col" style="padding-right: 50px;">
                                     <div class='input-group date' id='datetimepicker6'>
-                                        <input type='text' class="form-control" />
+                                        <input type='text' class="form-control" id="fechaInicial" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -122,7 +127,7 @@
 
                                     <div class="form-group col" style="padding-right: 50px;">
                                     <div class='input-group date' id='datetimepicker7'>
-                                        <input type='text' class="form-control" />
+                                        <input type='text' class="form-control" id="fechaFinal" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -132,14 +137,16 @@
 
 
 
-                                <input type="submit" value="Pedir" class="button pull-right">
+                                <input type="submit" value="Pedir" class="button pull-right" onclick="enviarSolicitud()">
 
                             </div>
+
+                    </form>
 
                              <script>
                                  $('#datetimepicker6').datetimepicker({
                                      locale: 'es',
-                                     format: 'YYYY/DD/MM HH:mm',
+                                     format: 'YYYY/MM/DD HH:mm',
                                      useCurrent:false,
                                      disabledHours: ['18', '19','20','21','22','23','24','0','1','2','3','4','5','6','7', '8'],
                                      daysOfWeekDisabled: [0, 6],
@@ -149,7 +156,7 @@
 
                                  $('#datetimepicker7').datetimepicker({
                                      locale: 'es',
-                                     format: 'YYYY/DD/MM HH:mm',
+                                     format: 'YYYY/MM/DD HH:mm',
                                      disabledHours: ['18', '19','20','21','22','23','24','0','1','2','3','4','5','6','7', '8'],
                                      useCurrent: false,
                                      daysOfWeekDisabled: [0, 6],
@@ -201,6 +208,43 @@
 
 
     </div>
+
+
+
+
+
+
+    <input type="hidden" id="idObjeto" value={{anItem.id}} />
+    <input type="hidden" id="mailUsuario" value={{user.email}} />
+
+
+            <script>
+                function enviarSolicitud(){
+
+                    var itemId = document.getElementById("idObjeto").value ;
+                    var fechaInicial = document.getElementById("fechaInicial").value;
+                    var fechaFinal = document.getElementById("fechaFinal").value;
+                    var mailUsuario = document.getElementById("mailUsuario").value;
+
+
+                    $.ajax({
+                        url: '/articulos/ajax/enviar_solicitud/',
+                        data: {
+                            'id': itemId,
+                            'fechaInicial': fechaInicial,
+                            'fechaFinal': fechaFinal,
+                            'mailUsuario': mailUsuario,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        type : "POST",
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(data.a_message);
+                        }
+                    });
+
+                }
+            </script>
 
 
 

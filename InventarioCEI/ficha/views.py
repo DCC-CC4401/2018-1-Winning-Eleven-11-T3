@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from ficha.models import Prestables
 from django.http import JsonResponse
 import os
-
+from datetime import datetime
 from django.conf import settings
-from django.http import HttpResponse
-from django.utils.translation import ugettext_lazy as _
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from userSystem.models import Usuarios
+from ficha.models import Solicitudes
 
 def viewitem(request, anId):
     anItem = Prestables.objects.get(id=anId)
@@ -90,5 +90,50 @@ def cambiar_imagen(request):
             data['a_message'] = 'Imagen actualizada correctamente.'
         else:
             data['a_message'] = 'Error al actualizar la imagen.'
+
+    return JsonResponse(data)
+
+
+def enviar_solicitud(request):
+
+    fechaSolicitud = datetime.now()
+
+    if request.method == "POST":
+        theId = request.POST.get('id')
+        data={}
+
+        fechaInicial = datetime.strptime(request.POST.get('fechaInicial'),"%Y/%m/%d %H:%M")
+        fechaFinal = datetime.strptime(request.POST.get('fechaFinal'),"%Y/%m/%d %H:%M")
+        theEmail = request.POST.get('mailUsuario')
+
+
+        if (    fechaInicial.weekday()>4 or
+                fechaFinal.weekday() > 4 or
+                fechaInicial.hour > 17 or
+                fechaInicial.hour < 9 or
+                fechaFinal.hour > 17 or
+                fechaFinal.hour < 9):
+            data['a_message'] = 'Los reservas solo pueden ser durante días hábiles entre 09 y 18 hrs.'
+            return JsonResponse(data)
+
+        if (fechaFinal - fechaInicial).total_seconds()<=0:
+            data['a_message'] = 'La fecha y hora de término de la reserva debe ser posterior a la de inicio.'
+            return JsonResponse(data)
+
+        if (fechaInicial - fechaSolicitud).total_seconds()<3600:
+            data['a_message'] = 'Las reservas deben ser solicitadas con un mínimo de una hora de anticipación.'
+            return JsonResponse(data)
+
+
+        objetoSolicitado = Prestables.objects.get(id=theId)
+        personaSolicitante = Usuarios.objects.get(user__email=theEmail)
+
+        estaSolicitud = Solicitudes(tiempo_solicitud=fechaSolicitud,tiempo_inicio=fechaInicial,tiempo_final=fechaFinal,persona=personaSolicitante,prestable=objetoSolicitado,estado_sol="Pendiente")
+
+        try:
+            estaSolicitud.save()
+            data['a_message'] = 'Su solicitud se ha ingresado al sistema correctamente.'
+        except:
+            data['a_message'] = 'Error al procesar su solicitud.'
 
     return JsonResponse(data)

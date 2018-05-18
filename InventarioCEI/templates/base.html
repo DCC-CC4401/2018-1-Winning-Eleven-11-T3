@@ -26,13 +26,6 @@
               <h1 class="logo">
                 <a href="{% url 'home' %}">
                   Sistema de Inventario
-                  {% if user.is_authenticated %}
-                    {% if user.is_teacher %}
-                      <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Teacher profile"></span>
-                    {% else %}
-                      <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
-                    {% endif %}
-                  {% endif %}
                 </a>
               </h1>
             </div>

@@ -1,7 +1,8 @@
 from django.db import models
 from random import randint
-from userSystem.models import Usuarios
-
+from userSystem.models import Usuarios, User
+import uuid
+from django.utils import timezone
 # Clase prestables, pueden ser articulos o salas
 class Prestables(models.Model):
 
@@ -46,19 +47,19 @@ class Solicitudes(models.Model):
         ("Rechazada", "Rechazada"),
     )
 
-    id = models.BigAutoField(primary_key=True)
-    tiempo_inicio = models.DateTimeField
-    tiempo_final = models.DateTimeField
-    tiempo_solicitud = models.DateTimeField
-    persona = models.OneToOneField(Usuarios, on_delete=models.CASCADE, default=None)
-    prestable = models.OneToOneField(Prestables, on_delete=models.CASCADE, default=None)
+    id = models.CharField(primary_key=True,default="",max_length=50)
+    tiempo_inicio = models.DateTimeField(blank=False,default=timezone.now)
+    tiempo_final = models.DateTimeField(blank=False,default=timezone.now)
+    tiempo_solicitud = models.DateTimeField(blank=False,default=timezone.now)
+    persona = models.ForeignKey(Usuarios, on_delete=models.CASCADE, default=None)
+    prestable = models.ForeignKey(Prestables, on_delete=models.CASCADE, default=None)
     estado_sol = models.CharField(max_length=15, choices=opciones_sol)
 
     def save(self):
         if not self.id:
             is_unique = False
             while not is_unique:
-                id = randint(1000000000, 9999999999)  # 19 digits: 1, random 18 digits
+                id = str(uuid.uuid4())
                 is_unique = (Solicitudes.objects.filter(id=id).count() == 0)
             self.id = id
         super(Solicitudes, self).save()
