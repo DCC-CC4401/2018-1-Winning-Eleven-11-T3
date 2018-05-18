@@ -1,8 +1,6 @@
 to-do list
 
 12.  La  reserva  de  cualquier  artículo  debe  realizarse  al menos  1  hora  antes  de  la  fecha/hora  de  inicio  del  préstamo.
-39.  En  el  caso  de  los  administradores,  el  sistema  debe permitir  gestionar  la  información  de  un  artículo. (falta solo la imagen)
-
 
 
 5.  El  sistema  debe  permitir  que  personas  naturales  realicen reservas  de  artículos.

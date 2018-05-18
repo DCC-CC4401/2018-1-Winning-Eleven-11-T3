@@ -39,10 +39,9 @@
                 <form method="post">
                     {% csrf_token %}
                     <h2><textarea id="elTitulo" value="{{ anItem.nombre }}">{{ anItem.nombre }} </textarea> </h2>
-                    <button onclick="guardarTitulo()">Guardar</button>
+                    <button onclick="guardarTitulo()">Guardar nombre</button>
                 </form>
-
-                </div>
+            </div>
 
              <div class="form-group" style="max-width: 500px; padding-left: 60px;" align="center">
                 <h2><estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
@@ -67,21 +66,35 @@
         <div class="form-row" align="center">
             <div class="form-group col" style="max-width: 500px" align="center">
                 <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
-                <button style="position: absolute;bottom: 5%;right: 20%;transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);font-size: 14px;padding: 10px 10px;cursor: pointer;text-align: center;">
-                    Cambiar...</button>
-            </div>
-        </div>
-
-        <div class="form-row" align="center">
-            <div class="form-group col" style="max-width: 500px" align="center">
 
                 <form method="post">
                     {% csrf_token %}
+                    <div class="container" align="center" style="padding-left: 100px">
+                        <div class="form-row" align="center">
+                            <div class="form-group" align="center">
+                                <label>Cambiar imagen:</label><input id="image_to_upload" name="image_to_upload" type="file"/>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+        <div class="form-row" align="center">
+            <div class="form-group" style="max-width: 400px" align="center">
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <textarea id="laDescripcion" contenteditable="true" style="min-width: 400px; min-height: 100px; border:2px dashed #555;border-radius: 10px; padding: 5px;" align="justify" value="{{ anItem.descripcion}}">{{ anItem.descripcion}} </textarea>
 
-                    <button onclick="guardarDescripcion()" >Guardar</button>
+                    <button onclick="guardarDescripcion()" >Guardar descripción</button>
                 </form>
             </div>
+        </div>
+    </div>
 
 
 
@@ -167,8 +180,7 @@
 
 
 
-        </div>
-    </div>
+
 
 
 
@@ -188,7 +200,30 @@
 </script>
 
 
-
+    <script type="text/javascript">
+    jQuery.noConflict();
+    formdata = new FormData();
+    jQuery("#image_to_upload").on("change", function() {
+        var file = this.files[0];
+        var itemId = document.getElementById("idObjeto").value ;
+        if (formdata) {
+            formdata.append("image", file);
+            formdata.append("id",itemId);
+            formdata.append('csrfmiddlewaretoken','{{ csrf_token }}');
+            jQuery.ajax({
+                url: '/articulos/ajax/cambiar_imagen/',
+                type: "POST",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert(data.a_message);
+                    location.reload();
+                }
+            });
+        }
+    });
+</script>
 
 
 

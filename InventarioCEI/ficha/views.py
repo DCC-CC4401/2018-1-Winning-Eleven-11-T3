@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
 from ficha.models import Prestables
 from django.http import JsonResponse
-from django.http import HttpResponse
+import os
 
-# Create your views here.
+from django.conf import settings
+from django.http import HttpResponse
+from django.utils.translation import ugettext_lazy as _
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 def viewitem(request, anId):
     anItem = Prestables.objects.get(id=anId)
@@ -67,5 +71,24 @@ def cambiar_estado(request):
             data['a_message'] = 'Estado actualizado correctamente.'
         else:
             data['a_message'] = 'Error al actualizar el estado.'
+
+    return JsonResponse(data)
+
+
+def cambiar_imagen(request):
+
+    if request.method == "POST":
+        theId = request.POST.get('id')
+        image = request.FILES['image']
+        tmp_file = os.path.join(settings.UPLOAD_PATH, image.name)
+        path = default_storage.save(tmp_file, ContentFile(image.read()))
+
+        data = {
+            'modificar_imagen': Prestables.objects.filter(id=theId).update(imagen=path)
+        }
+        if data['modificar_imagen']:
+            data['a_message'] = 'Imagen actualizada correctamente.'
+        else:
+            data['a_message'] = 'Error al actualizar la imagen.'
 
     return JsonResponse(data)
