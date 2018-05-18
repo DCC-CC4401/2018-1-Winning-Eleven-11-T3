@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from ficha.models import Prestables
 from django.http import JsonResponse
 import os
@@ -7,16 +7,21 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from userSystem.models import Usuarios
-from ficha.models import Solicitudes
+from ficha.models import Solicitudes, Prestamos
 
 def viewitem(request, anId):
     anItem = Prestables.objects.get(id=anId)
 
     if request.user.is_authenticated:
+
+        ultimasSolicitudes = Solicitudes.objects.filter(estado_sol="Aceptada", prestable__id=anId).order_by('-tiempo_final')[:10]
+        ultimasSolicitudes.values_list('tiempo_inicio','tiempo_final')
+
+
         if request.user.is_administrador:
-            return render(request, 'ficha/viewitem_admin.html', {'anItem': anItem})
+            return render(request, 'ficha/viewitem_admin.html', {'anItem': anItem,'solicitudes':ultimasSolicitudes})
         else:
-            return render(request, 'ficha/viewitem.html', {'anItem': anItem})
+            return render(request, 'ficha/viewitem.html', {'anItem': anItem,'solicitudes':ultimasSolicitudes})
 
 
     return render(request, 'userSystem/home.html')
@@ -105,6 +110,13 @@ def enviar_solicitud(request):
         fechaInicial = datetime.strptime(request.POST.get('fechaInicial'),"%Y/%m/%d %H:%M")
         fechaFinal = datetime.strptime(request.POST.get('fechaFinal'),"%Y/%m/%d %H:%M")
         theEmail = request.POST.get('mailUsuario')
+
+        if(
+            Solicitudes.objects.filter(estado_sol="Aceptada",tiempo_inicio__lte=fechaInicial,tiempo_final__gte=fechaInicial).count()+
+            Solicitudes.objects.filter(estado_sol="Aceptada",tiempo_inicio__lte=fechaFinal,tiempo_final__gte=fechaFinal).count()>0):
+            data['a_message'] = 'Ya existe una reserva aceptada en el rango de fechas indicado.'
+            return JsonResponse(data)
+
 
 
         if (    fechaInicial.weekday()>4 or

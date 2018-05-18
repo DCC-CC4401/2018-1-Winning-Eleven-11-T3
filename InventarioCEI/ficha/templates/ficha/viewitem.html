@@ -103,6 +103,9 @@
                         <div class="form-row"  style=" background-color: #e9ecef;border: 1px solid black; padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px">
 
 
+                            {% if anItem.estado == "Disponible" or anItem.estado == "En prestamo" %}
+
+
                             <div class="container">
 
 
@@ -138,6 +141,11 @@
 
 
                                 <input type="submit" value="Pedir" class="button pull-right" onclick="enviarSolicitud()">
+
+                            {% else %}
+                                <label>No se puede solicitar el objeto debido a su estado actual.</label>
+                            {% endif %}
+
 
                             </div>
 
@@ -181,16 +189,13 @@
 
 
                     <div class="form-row"  style=" border: 1px solid black; padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px">
-                       <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
-                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+
+                        {% for aSol in solicitudes%}
+                            {% csrf_token %}
+
+                            <li>{{ aSol.tiempo_inicio }}&nbsp - &nbsp{{ aSol.tiempo_final }} </li>
+                        {% endfor %}
+
 
                     </div>
                 </div>
