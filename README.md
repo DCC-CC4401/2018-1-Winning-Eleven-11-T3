@@ -1,0 +1,9 @@
+# 2018-1-Winning-Eleven-11-T3
+## Interfaces (deben ser responsive)
+1. Landing page para personas naturales
+2. Perfil del usuario (vista por el dueño del perfil)
+3. Ficha de un articulo
+4. Landing page para administradores
+
+## Requisitos que deben implementar en forma completa
+1-2, 4-5, 7-8, 12, 14-18, 23, 25-26, 28, 37-40, 51, 54-56.
