@@ -29,10 +29,6 @@
 
     </head>
 
-
-
-
-
     <div class="container" align="center">
         <div class="form-row" align="center">
             <div class="form-group" style="max-width: 500px" align="center">
@@ -43,27 +39,34 @@
                 </form>
             </div>
 
-             <div class="form-group" style="max-width: 500px; padding-left: 60px;" align="center">
+            <div class="form-group" style="max-width: 500px; padding-left: 60px;" align="center">
                 <h2><estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
-                 </div>
-             <div class="form-group" style="max-width: 500px" align="center">
+            </div>
 
-                 <form method="post">
+
+            <div class="form-group" style="max-width: 500px" align="center">
+
+
+                <form method="post">
+
                     {% csrf_token %}
-                 <div class="dropdown" style="margin-top: 15px;border-collapse: collapse">
-                                              <button id="dropEstado" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
-                                              <ul class="dropdown-menu">
-                                                  <li><a onclick="cambiarEstado('Disponible')" href="" >Disponible</a></li>
-                                                  <li><a onclick="cambiarEstado('En prestamo')" href="">En prestamo</a></li>
-                                                  <li><a onclick="cambiarEstado('En reparacion')" href="">En reparacion</a></li>
-                                                  <li><a onclick="cambiarEstado('Perdido')" href="">Perdido</a></li>
-                                              </ul>
-                                          </div>
-                     </form>
+
+                    <div class="dropdown" style="margin-top: 15px;border-collapse: collapse">
+                        <button id="dropEstado" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="cambiarEstado('Disponible')" href="" >Disponible</a></li>
+                            <li><a onclick="cambiarEstado('En prestamo')" href="">En prestamo</a></li>
+                            <li><a onclick="cambiarEstado('En reparacion')" href="">En reparacion</a></li>
+                            <li><a onclick="cambiarEstado('Perdido')" href="">Perdido</a></li>
+                        </ul>
+                    </div>
+                </form>
             </div>
         </div>
 
+
         <div class="form-row" align="center">
+
             <div class="form-group col" style="max-width: 500px" align="center">
                 <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
 
@@ -97,134 +100,114 @@
     </div>
 
 
+    <input type="hidden" id="idObjeto" value={{anItem.id}} />
 
 
+    <script>
+        function guardarTitulo(){
 
+            var itemId = document.getElementById("idObjeto").value ;
+            var tituloNuevo = document.getElementById("elTitulo").value;
 
-            <input type="hidden" id="idObjeto" value={{anItem.id}} />
-
-
-            <script>
-                function guardarTitulo(){
-
-                    var itemId = document.getElementById("idObjeto").value ;
-                    var tituloNuevo = document.getElementById("elTitulo").value;
-
-                    $.ajax({
-                        url: '/articulos/ajax/guardar_titulo/',
-                        data: {
-                            'id': itemId,
-                            'nombre': tituloNuevo,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        type : "POST",
-                        dataType: 'json',
-                        success: function (data) {
-                            alert(data.a_message);
-                        }
-                    });
-
-                }
-            </script>
-
-
-            <script>
-                function guardarDescripcion(){
-
-                    var itemId = document.getElementById("idObjeto").value ;
-                    var descripcionNueva = document.getElementById("laDescripcion").value;
-
-                    $.ajax({
-                        url: '/articulos/ajax/guardar_descripcion/',
-                        data: {
-                            'id': itemId,
-                            'descripcion': descripcionNueva,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        type : "POST",
-                        dataType: 'json',
-                        success: function (data) {
-                            alert(data.a_message);
-                        }
-                    });
-
-                }
-            </script>
-
-
-
-            <script>
-                function cambiarEstado(nuevoEstado){
-
-                    var itemId = document.getElementById("idObjeto").value ;
-
-
-                    $.ajax({
-                        url: '/articulos/ajax/cambiar_estado/',
-                        data: {
-                            'id': itemId,
-                            'estado': nuevoEstado,
-                            'csrfmiddlewaretoken': '{{ csrf_token }}'
-                        },
-                        type : "POST",
-                        dataType: 'json',
-                        success: function (data) {
-                            alert(data.a_message);
-                        }
-                    });
-
-                }
-            </script>
-
-
-
-
-
-
-
-
-
-
-<script>
-    var estado = document.getElementById("myEstado").innerText;
-    if(estado=="En reparacion") {
-        document.documentElement.style.setProperty('--footer-color', 'blue');
-    }
-
-    else if(estado=="En prestamo"){
-        document.documentElement.style.setProperty('--footer-color', 'red');
-    }
-    else if(estado=="Perdido"){
-        document.documentElement.style.setProperty('--footer-color', 'black');
-    }
-</script>
-
-
-    <script type="text/javascript">
-    jQuery.noConflict();
-    formdata = new FormData();
-    jQuery("#image_to_upload").on("change", function() {
-        var file = this.files[0];
-        var itemId = document.getElementById("idObjeto").value ;
-        if (formdata) {
-            formdata.append("image", file);
-            formdata.append("id",itemId);
-            formdata.append('csrfmiddlewaretoken','{{ csrf_token }}');
-            jQuery.ajax({
-                url: '/articulos/ajax/cambiar_imagen/',
-                type: "POST",
-                data: formdata,
-                processData: false,
-                contentType: false,
+            $.ajax({
+                url: '/articulos/ajax/guardar_titulo/',
+                data: {
+                    'id': itemId,
+                    'nombre': tituloNuevo,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                type : "POST",
+                dataType: 'json',
                 success: function (data) {
                     alert(data.a_message);
-                    location.reload();
                 }
             });
         }
-    });
-</script>
+    </script>
 
+
+
+
+    <script>
+        function guardarDescripcion(){
+            var itemId = document.getElementById("idObjeto").value ;
+            var descripcionNueva = document.getElementById("laDescripcion").value;
+            $.ajax({
+                url: '/articulos/ajax/guardar_descripcion/',
+                data: {
+                    'id': itemId,
+                    'descripcion': descripcionNueva,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                type : "POST",
+                dataType: 'json',
+                success: function (data) {
+                    alert(data.a_message);
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        function cambiarEstado(nuevoEstado){
+            var itemId = document.getElementById("idObjeto").value ;
+            $.ajax({
+                url: '/articulos/ajax/cambiar_estado/',
+                data: {
+                    'id': itemId,
+                    'estado': nuevoEstado,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                type : "POST",
+                dataType: 'json',
+                success: function (data) {
+                    alert(data.a_message);
+                }
+            });
+        }
+    </script>
+
+
+    <script>
+        var estado = document.getElementById("myEstado").innerText;
+        if(estado=="En reparacion") {
+            document.documentElement.style.setProperty('--footer-color', 'blue');
+        }
+        else if(estado=="En prestamo"){
+            document.documentElement.style.setProperty('--footer-color', 'red');
+        }
+        else if(estado=="Perdido"){
+            document.documentElement.style.setProperty('--footer-color', 'black');
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+        jQuery.noConflict();
+        formdata = new FormData();
+        jQuery("#image_to_upload").on("change", function() {
+            var file = this.files[0];
+            var itemId = document.getElementById("idObjeto").value ;
+            if (formdata) {
+                formdata.append("image", file);
+                formdata.append("id",itemId);
+                formdata.append('csrfmiddlewaretoken','{{ csrf_token }}');
+                jQuery.ajax({
+                    url: '/articulos/ajax/cambiar_imagen/',
+                    type: "POST",
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        alert(data.a_message);
+                        location.reload();
+                    }
+                });
+            }
+        });
+    </script>
 
 
 {% endblock %}
