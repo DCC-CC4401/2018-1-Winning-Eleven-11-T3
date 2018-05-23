@@ -1,16 +1,16 @@
 from django.shortcuts import render
-from .models import Articulo
+from .models import Prestables
 
 
 # Create your views here.
 def busqueda_simple(request):
     context = {}
     if request.method == 'POST':
-        busqueda = Articulo.objects.all()
+        busqueda = Prestables.objects.all()
         if request.POST.get('nombre', False):
             busqueda = busqueda.filter(nombre=request.POST['nombre'])
             context['busqueda'] = busqueda[:12]
-    populares = Articulo.objects.all().order_by("-solicitudes")[:6]
+    populares = Prestables.objects.all().order_by("-solicitudes")[:6]
     context['populares'] = populares
     return render(request, 'articulos-bsimple.html', context)
 
@@ -18,7 +18,7 @@ def busqueda_simple(request):
 def busqueda_avanzada(request):
     context = {}
     if request.method == 'POST':
-        busqueda = Articulo.objects.all()
+        busqueda = Prestables.objects.all()
         if request.POST.get('nombre', False):
             busqueda = busqueda.filter(nombre=request.POST['nombre'])
             context['busqueda'] = busqueda[:12]
@@ -28,6 +28,6 @@ def busqueda_avanzada(request):
             else:
                 busqueda = busqueda.filter(estado=request.POST['estado'])
                 context['busqueda'] = busqueda[:12]
-    populares = Articulo.objects.all().order_by("-solicitudes")[:6]
+    populares = Prestables.objects.all().order_by("-solicitudes")[:6]
     context['populares'] = populares
     return render(request, 'articulos-bavanzada.html', context)
