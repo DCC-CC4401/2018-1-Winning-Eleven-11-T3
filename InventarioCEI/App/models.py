@@ -64,3 +64,16 @@ class Solicitudes(models.Model):
                 is_unique = (Solicitudes.objects.filter(id=id).count() == 0)
             self.id = id
         super(Solicitudes, self).save()
+
+
+# Prestamos, solicitudes aceptadas
+class Prestamos(models.Model):
+
+    opciones_pres = (
+        ("Vigente", "Vigente"),
+        ("Caducada", "Caducada"),
+        ("Perdida", "Perdida"),
+    )
+
+    solicitud_aceptada = models.OneToOneField(Solicitudes, on_delete=models.CASCADE,primary_key=True)
+    estado_sol = models.CharField(max_length=15, choices=opciones_pres)
