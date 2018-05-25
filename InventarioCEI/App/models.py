@@ -20,6 +20,7 @@ class Prestables(models.Model):
     estado = models.CharField(max_length=15, choices=opciones, default="Disponible")
     imagen = models.ImageField(upload_to="img", default='img/none.png')
     descripcion = models.CharField(max_length=200, default="")
+    numsolic = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre
