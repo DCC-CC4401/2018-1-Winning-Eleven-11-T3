@@ -12,7 +12,7 @@ class User(AbstractUser):
     is_administrador = models.BooleanField(default=False)
     has_permission = models.BooleanField(default=True)
     rut = models.CharField(max_length=30, unique=True, default="")
-    username = models.CharField(max_length=30, unique=False, default="")
+    username = models.CharField(max_length=30, unique=False, default="none")
 
 
 class Usuarios(models.Model):

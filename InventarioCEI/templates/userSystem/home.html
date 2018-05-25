@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Bienvenido al sistema de inventario del CEI! <span class="icon-emo-happy"></span></h2>
-  <p class="lead">
-    Si ya tienes una cuenta, <a href="{% url 'login' %}">inicia sesión</a>. Si aún no la tienes, ingresa <a href="{% url 'usuarios_signup' %}">aquí</a> para crear una cuenta nueva.
-  </p>
-  <hr>
-  <h3>En qué consiste este sistema?</h3>
-  <p>
-    Este sistema de inventario fue desarrollado para poner a disposición de la comunidad universitaria los artículos y espacios que posee el CEI.
-  </p>
+    <div class="container">
+        <div class="card mb-3">
+            <div class="card-body">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+                <h2>Bienvenido al sistema de inventario del CEI! <span class="icon-emo-happy"></span></h2>
+                <p class="lead">
+                    Si ya tienes una cuenta, <a href="{% url 'login' %}">inicia sesión</a>. Si aún no la tienes, ingresa <a href="{% url 'usuarios_signup' %}">aquí</a> para crear una cuenta nueva.
+                </p>
+                <hr>
+                <h3>En qué consiste este sistema?</h3>
+                <p>
+                    Este sistema de inventario fue desarrollado para poner a disposición de la comunidad universitaria los artículos y espacios que posee el CEI.
+                </p>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
