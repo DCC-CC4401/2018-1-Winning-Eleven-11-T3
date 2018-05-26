@@ -13,14 +13,16 @@ from App.models import Solicitudes, Prestamos
 # Create your views here.
 def busqueda_simple(request):
     context = {}
-    if request.method == 'POST':
-        busqueda = Prestables.objects.all()
-        if request.POST.get('nombre', False):
-            busqueda = busqueda.filter(nombre=request.POST['nombre'])
-            context['busqueda'] = busqueda[:12]
-    populares = Prestables.objects.all().order_by("-numsolic")[:6]
-    context['populares'] = populares
-    return render(request, 'articulos/articulos-bsimple.html', context)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            busqueda = Prestables.objects.all()
+            if request.POST.get('nombre', False):
+                busqueda = busqueda.filter(nombre=request.POST['nombre'])
+                context['busqueda'] = busqueda[:12]
+        populares = Prestables.objects.all().order_by("-numsolic")[:6]
+        context['populares'] = populares
+        return render(request, 'articulos/articulos-bsimple.html', context)
+    return render(request, 'userSystem/home.html')
 
 
 def busqueda_avanzada(request):
