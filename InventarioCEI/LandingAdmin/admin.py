@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Usuario, Prestamo, Articulo
+from .models import Prestables, Prestamos, Solicitudes, Aforo, Profile
 
-admin.site.register(Usuario)
-admin.site.register(Prestamo)
-admin.site.register(Articulo)
+admin.site.register(Prestables)
+admin.site.register(Prestamos)
+admin.site.register(Solicitudes)
+admin.site.register(Aforo)
+admin.site.register(Profile)

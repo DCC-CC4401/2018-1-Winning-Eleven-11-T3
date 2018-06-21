@@ -1,72 +1,13 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="es">
-<meta charset='utf-8' />
+{% extends "landingAdmin/navbar.html" %}
+{% load static %}
 <link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
 <link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
-<script type="text/javascript" src="{% static 'scripts/lib/moment.min.js'%}"></script>
-<script type="text/javascript" src="{% static 'scripts/lib/jquery.min.js'%}"></script>
 
-<script type="text/javascript" src="{% static 'scripts/customCalendar.js'%}"></script>
-<script type="text/javascript" src="{% static 'scripts/locale-all.js'%}"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-<script>
-
-  $(document).ready(function() {
-    var LocalCode = 'es-do';
-    $('#calendar').fullCalendar({
-      header: {
-        left: 'prevMonth, prev',
-        center: 'title today',
-          right: 'next, nextMonth'
-      },
-      locale: LocalCode,
-      defaultView: 'agendaWeek',
-      weekends: false,
-      minTime: '09:00:00',
-      maxTime: '18:00:00',
-      aspectRatio: 2.7,
-      allDaySlot: false,
-      editable: false,
-      events: [ {% for res in reservas %}
-               {
-              title: '{{ res.title }}',
-              start: '{{ res.start }}',
-              end: '{{ res.end }}',
-              color: '{{ res.color }}'
-            },
-          {% endfor %}
-      ]
-
-    });
-
-
-    $('input[class=boxEspacios]').on('click', function() {
-         $(this).closest("form").submit();
-    });
-
-     $('a').on('click', function(e) {
-         var id= $(this).attr('id');
-         var tabla = document.getElementById("mostrar_"+id.toString());
-         $(".filter").hide();
-         tabla.setAttribute("style", "display:inline")
-     });
-
-  });
-</script>
 
 <!---------->
+{% block title %}CEI - Administrador{% endblock %}
 
-
-<head>
-    <meta charset="UTF-8">
-    <title>Not U-Cursos</title>
-</head>
-<body>
+{% block body %}
 <div class="row">
   <div class="column left">
         </div>
@@ -94,11 +35,9 @@
             <div id="calendar"></div>
     <div align="center" style="margin-bottom: 50px">
         <form method="POST">
-        {% for art in articulos %}
-            {% if art.espacio %}
+        {% for espacio in listaEspacios %}
             {% csrf_token %}
-            <input class="boxEspacios" type="checkbox" name="optcheck{{ art.id }}" value="{{ art.id }}" {% if art.id in filtroEspacio %}checked="checked"{% endif %}> {{ art }} <span class="dot" style="background-color: {{ art.color_calendario }}"></span>
-            {% endif %}
+            <input class="boxEspacios" type="checkbox" name="optcheck{{ espacio.id }}" value="{{ espacio.id }}" {% if espacio.id in filtroEspacio %}checked="checked"{% endif %}> {{ espacio.nombre }} <span class="dot" style="background-color: {{ espacio.color }}"></span>
         {% endfor %}
         </form>
     </div>
@@ -120,24 +59,22 @@
       <table class="table" align="left" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th style="width: 4%"></th>
-              <th style="width: 6%">ID</th>
+              <th style="width: 5%"></th>
               <th style="width: 20%">Artículo</th>
-              <th style="width: 20%">Usuario</th>
+              <th style="width: 25%">Usuario</th>
               <th style="width: 25%">Fecha de Préstamo</th>
               <th style="width: 25%"> Fecha de Solicitud</th>
           </tr>
           </thead>
           <tbody>
-          {% for prest in prestamos %}
-              {% if prest.estado == "Pendiente"%}
+          {% for solicitud in totalSolicitudes %}
+              {% if solicitud.estado_sol == "Pendiente"%}
               <tr>
-                  <td><input type="checkbox" name='checkedPend[]' value="{{prest.id}}"></td>
-                  <td>{{prest.id}}</td>
-                  <td>{{prest.id_articulo}}</td>
-                  <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i'  }}</td>
-                  <td>{{prest.fecha_termino|date:'d/m/Y H:i'  }}</td>
+                  <td><input type="checkbox" name='checkedPend[]' value="{{solicitud.id}}"></td>
+                  <td>{{solicitud.id_obj}}</td>
+                  <td>{{solicitud.rut_per.user }}</td>
+                  <td>{{solicitud.tiempo_inicio|date:'d/m/Y H:i'  }}</td>
+                  <td>{{solicitud.tiempo_final|date:'d/m/Y H:i'  }}</td>
               </tr>
               {%  endif %}
           {%  endfor %}
@@ -151,10 +88,10 @@
             <p>
             <h3 style="display: inline; float: left">Pedidos</h3>
               <div style="display:inline; font-size: small">
-                <a href="javascript:void(0)" id="filtrarTodos" style="margin-right: 5px">Todos</a>
-                <a href="javascript:void(0)" id="filtrarVigentes" style="margin-right: 5px">Vigentes</a>
-                <a href="javascript:void(0)" id="filtrarCaducados" style="margin-right: 5px">Caducados</a>
-                <a href="javascript:void(0)" id="filtrarPerdidos" style="margin-right: 5px">Perdidos</a>
+                <a href="javascript:void(0)" id="filtrarTodos" style="margin-right: 2px">Todos</a>
+                <a href="javascript:void(0)" id="filtrarVigentes" style="margin-right: 2px">Vigentes</a>
+                <a href="javascript:void(0)" id="filtrarCaducados" style="margin-right: 2px">Caducados</a>
+                <a href="javascript:void(0)" id="filtrarPerdidos" style="margin-right: 2px">Perdidos</a>
             </div>
             <span style="float:right; margin-left: 20px; font-size: 30px"> <i class="fa fa-check-circle" ></i>
                         <i class="fa fa-times-circle"></i></span>
@@ -166,23 +103,21 @@
 <table class="table" align="right" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th style="width: 4%"> </th>
-              <th style="width: 6%">ID</th>
-              <th style="width: 20%">Artículo</th>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
               <th style="width: 25%">Usuario</th>
               <th style="width: 25%">Fecha de Préstamo</th>
               <th style="width: 20%">Estado</th>
           </tr>
           </thead>
           <tbody>
-          {% for prest in prestamos %}
+          {% for prest in totalPrestamos %}
               <tr>
-                  <td><input type="checkbox" value="{{prest.id}}"></td>
-                  <td style="width:20px">{{prest.id}}</td>
-                  <td>{{prest.id_articulo}}</td>
-                  <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
-                  <td>{{ prest.estado }}</td>
+                  <td><input type="checkbox" value="{{prest.id.id}}"></td>
+                  <td>{{prest.id.id_obj}}</td>
+                  <td>{{prest.id.rut_per.user }}</td>
+                  <td>{{prest.id.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado_sol }}</td>
               </tr>
           {%  endfor %}
           </tbody>
@@ -192,24 +127,22 @@
      <table class="table" align="right" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th style="width: 4%"> </th>
-              <th style="width: 6%">ID</th>
-              <th style="width: 20%">Artículo</th>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
               <th style="width: 25%">Usuario</th>
               <th style="width: 25%">Fecha de Préstamo</th>
               <th style="width: 20%">Estado</th>
           </tr>
           </thead>
           <tbody>
-              {% for prest in prestamos %}
-                  {% if prest.estado == "Vigente" %}
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Vigente" %}
               <tr>
-                  <td><input type="checkbox" value="{{prest.id}}"></td>
-                  <td style="width:20px">{{prest.id}}</td>
-                  <td>{{prest.id_articulo}}</td>
-                  <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
-                  <td>{{ prest.estado }}</td>
+                  <td><input type="checkbox" value="{{prest.id.id}}"></td>
+                  <td>{{prest.id.id_obj}}</td>
+                  <td>{{prest.id.rut_per.user }}</td>
+                  <td>{{prest.id.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado_sol }}</td>
               </tr>
                   {% endif %}
           {%  endfor %}
@@ -220,24 +153,22 @@
         <table class="table" align="right" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th style="width: 4%"> </th>
-              <th style="width: 6%">ID</th>
-              <th style="width: 20%">Artículo</th>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
               <th style="width: 25%">Usuario</th>
               <th style="width: 25%">Fecha de Préstamo</th>
               <th style="width: 20%">Estado</th>
           </tr>
           </thead>
           <tbody>
-              {% for prest in prestamos %}
-                  {% if prest.estado == "Caducado" %}
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Caducada" %}
               <tr>
-                  <td><input type="checkbox" value="{{prest.id}}"></td>
-                  <td style="width:20px">{{prest.id}}</td>
-                  <td>{{prest.id_articulo}}</td>
-                  <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
-                  <td>{{ prest.estado }}</td>
+                  <td><input type="checkbox" value="{{prest.id.id}}"></td>
+                  <td>{{prest.id.id_obj}}</td>
+                  <td>{{prest.id.rut_per.user }}</td>
+                  <td>{{prest.id.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado_sol }}</td>
               </tr>
                   {% endif %}
           {%  endfor %}
@@ -248,24 +179,22 @@
         <table class="table" align="right" style="font-size: small">
           <thead class="thead-light">
           <tr>
-              <th style="width: 4%"> </th>
-              <th style="width: 6%">ID</th>
-              <th style="width: 20%">Artículo</th>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
               <th style="width: 25%">Usuario</th>
               <th style="width: 25%">Fecha de Préstamo</th>
               <th style="width: 20%">Estado</th>
           </tr>
           </thead>
           <tbody>
-              {% for prest in prestamos %}
-                  {% if prest.estado == "Perdido" %}
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Perdida" %}
               <tr>
-                  <td><input type="checkbox" value="{{prest.id}}"></td>
-                  <td style="width:20px">{{prest.id}}</td>
-                  <td>{{prest.id_articulo}}</td>
-                  <td>{{prest.id_usuario }}</td>
-                  <td>{{prest.fecha_inicio|date:'d/m/Y H:i' }}</td>
-                  <td>{{ prest.estado }}</td>
+                  <td><input type="checkbox" value="{{prest.id.id}}"></td>
+                  <td>{{prest.id.id_obj}}</td>
+                  <td>{{prest.id.rut_per.user }}</td>
+                  <td>{{prest.id.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado_sol }}</td>
               </tr>
                   {% endif %}
           {%  endfor %}
@@ -278,5 +207,4 @@
   </div>
   </div>
 </div>
-</body>
-</html>
+{% endblock %}
