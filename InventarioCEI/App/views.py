@@ -7,13 +7,68 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from userSystem.models import Usuarios
-from App.models import Solicitudes, Prestamos
+from App.models import Solicitudes, Prestamos, Aforo
 
 
 # Create your views here.
 def busqueda_simple(request):
     context = {}
     if request.user.is_authenticated:
+        if request.user.is_administrador:
+            total_solicitudes = Solicitudes.objects.all().order_by('tiempo_solicitud')
+            total_prestamos = Prestamos.objects.all().order_by('solicitud_aceptada__tiempo_solicitud')
+            total_espacios = Aforo.objects.all()
+            reservas_list = []
+            filtro_espacio = []
+            colores = ['green', 'red', 'blue', 'magenta', 'cyan', 'orange']
+            espacios_list = []
+            i = 0
+            for espacio in total_espacios:
+                espacio_dic = {
+                    "id": espacio.solicitud_aceptada.id,
+                    "nombre": espacio.solicitud_aceptada.nombre,
+                    "estado": espacio.solicitud_aceptada.estado,
+                    "color": colores[i],
+                }
+                i = i + 1
+                espacios_list.append(espacio_dic)
+
+            if request.method == 'POST':
+                for posts in request.POST:
+                    if "optcheck" in posts:
+                        filtro_espacio.append(int(request.POST[posts]))
+
+                checkedPend = request.POST.getlist('checkedPend[]')
+                for checked in checkedPend:
+                    una_solicitud = Solicitudes.objects.get(id=int(checked))
+                    if "aceptarPedidos" in request.POST:
+                        una_solicitud.estado_sol = "Aceptada"
+                        nuevo_prestamo = Prestamos()
+                        nuevo_prestamo.estado_sol = "Vigente"
+                        nuevo_prestamo.solicitud_aceptada = una_solicitud
+                        nuevo_prestamo.save()
+                    elif "rechazarPedidos" in request.POST:
+                        una_solicitud.estado_sol = "Rechazada"
+                    una_solicitud.save()
+
+            for solicitud in total_solicitudes:
+                if solicitud.estado_sol != 'Rechazado':
+                    if solicitud.prestables.id in filtro_espacio:
+                        for un_espacio in espacios_list:
+                            if solicitud.prestables.id == un_espacio["id"]:
+                                reserva_dic = {
+                                    "title": str(solicitud.prestables.nombre) + "-" + str(solicitud.persona),
+                                    "start": solicitud.tiempo_inicio.strftime("%Y-%m-%dT%H:%M:%S"),
+                                    "end": solicitud.tiempo_final.strftime("%Y-%m-%dT%H:%M:%S"),
+                                    "color": un_espacio["color"]
+                                }
+                                reservas_list.append(reserva_dic)
+
+            return render(request, 'articulos/landing-admin.html', {'totalPrestamos': total_prestamos,
+                                                                    'listaEspacios': espacios_list,
+                                                                    'listaReservas': reservas_list,
+                                                                    'totalSolicitudes': total_solicitudes,
+                                                                    'filtroEspacio': filtro_espacio})
         if request.method == 'POST':
             busqueda = Prestables.objects.all()
             if request.POST.get('nombre', False):
