@@ -23,11 +23,11 @@ def busqueda_simple(request):
             colores = ['green', 'red', 'blue', 'magenta', 'cyan', 'orange']
             espacios_list = []
             i = 0
-            for espacio in total_espacios:
+            for espacios in total_espacios:
                 espacio_dic = {
-                    "id": espacio.solicitud_aceptada.id,
-                    "nombre": espacio.solicitud_aceptada.nombre,
-                    "estado": espacio.solicitud_aceptada.estado,
+                    "id": espacios.espacio.id,
+                    "nombre": espacios.espacio.nombre,
+                    "estado": espacios.espacio.estado,
                     "color": colores[i],
                 }
                 i = i + 1
@@ -53,11 +53,11 @@ def busqueda_simple(request):
 
             for solicitud in total_solicitudes:
                 if solicitud.estado_sol != 'Rechazado':
-                    if solicitud.prestables.id in filtro_espacio:
+                    if solicitud.prestable.id in filtro_espacio:
                         for un_espacio in espacios_list:
-                            if solicitud.prestables.id == un_espacio["id"]:
+                            if solicitud.prestable.id == un_espacio["id"]:
                                 reserva_dic = {
-                                    "title": str(solicitud.prestables.nombre) + "-" + str(solicitud.persona),
+                                    "title": str(solicitud.prestable.nombre) + "-" + str(solicitud.persona),
                                     "start": solicitud.tiempo_inicio.strftime("%Y-%m-%dT%H:%M:%S"),
                                     "end": solicitud.tiempo_final.strftime("%Y-%m-%dT%H:%M:%S"),
                                     "color": un_espacio["color"]
