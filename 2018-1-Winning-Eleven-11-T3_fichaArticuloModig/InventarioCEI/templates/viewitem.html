@@ -1,0 +1,296 @@
+{% extends "navbar.html" %}
+{% load static %}
+{% block body %}
+
+ <head>
+
+        <style>
+
+            :root {
+                --footer-color: green;
+            }
+
+            estado {
+                border-radius: 10px;
+                margin: 20px;
+                padding: 5px;
+                background-color: var(--footer-color);
+            }
+
+
+        </style>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+    </head>
+
+
+
+
+
+    <div class="container" align="center">
+        <div class="form-row">
+           <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+            * {box-sizing: border-box}
+            body {font-family: "Lato", sans-serif;}
+
+            /* Style the tab */
+            .tab {
+                float: left;
+                border: 1px solid #ccc;
+                background-color: #f1f1f1;
+                width: 30%;
+                height: 600px;
+            }
+
+            /* Style the buttons inside the tab */
+            .tab button {
+                display: block;
+                background-color: inherit;
+                color: black;
+                padding: 22px 16px;
+                width: 100%;
+                border: none;
+                outline: none;
+                text-align: left;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+            /* Style the tab content */
+            .tabcontent {
+                float: left;
+                padding: 0px 12px;
+                border: 1px solid #ccc;
+                width: 70%;
+                border-left: none;
+                height: 600px;
+            }
+            </style>
+            </head>
+            <body>
+
+            <div class="tab">
+              {% if not allItem %}
+                  <button class="tablinks" onclick="openCity(event, 'EmptyList')" id="defaultOpen">No hay solicitudes</button>
+              {% else %}
+                  {% for prest in allItem  %}
+                      {% if forloop.first %}
+                          <button class="tablinks" onclick="openCity(event, {{prest.id }})" id="defaultOpen">{{ prest.nombre }}</button>
+                      {% else %}
+                        <button class="tablinks" onclick="openCity(event, {{prest.id }} )">{{ prest.nombre }}  </button>
+                      {% endif %}
+                  {%  endfor %}
+              {% endif %}
+            </div>
+            {% if not allItem %}
+                <div id="EmptyList" class="tabcontent">
+                  <h3>London</h3>
+                </div>
+            {% else %}
+                {% for prest in allItem  %}
+                    <div id= {{ prest.id}} class="tabcontent">
+                      <h3>{{ prest.nombre }}</h3>
+                      <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ prest.imagen }}" width="300" height="300">  </p>
+                      <p>{{ prest.descripcion  }}</p>
+                    </div>
+                {%  endfor %}
+            {% endif %}
+            <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+            </script>
+
+            </body>
+
+        </div>
+        <div class="form-row">
+            <div class="col-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+                  <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+                  <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                  <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                  <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                  <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                  <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                  <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                </div>
+              </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col" style="max-width: 500px">
+
+                <div class="container" style="max-width: 500px">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <h2>{{ anItem.nombre }} <estado> <font color="white"><var id="myEstado">{{ anItem.estado }}</var> </font> </estado> </h2>
+                            </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <p style="margin-top: 20px;"> <img src="{% get_media_prefix %}{{ anItem.imagen }}" width="300" height="300">  </p>
+                            </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col">  <p style="border-style: dashed solid;border-radius: 10px; padding: 5px;"> {{ anItem.descripcion }} </p>      </div>
+
+                    </div>
+                </div>
+                <script>
+                var estado = document.getElementById("myEstado").innerText;
+                if(estado=="En reparacion") {
+                    document.documentElement.style.setProperty('--footer-color', 'blue');
+                }
+                else if(estado=="En prestamo"){
+                    document.documentElement.style.setProperty('--footer-color', 'red');
+                }
+                else if(estado=="Perdido"){
+                    document.documentElement.style.setProperty('--footer-color', 'black');
+                }
+            </script>
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group col" style=" padding-left: 100px">
+
+                <div class="container" >
+
+                    <div class="form-row" style="padding-bottom: 10px; padding-top: 15px" >
+                       <h4><strong>Solicitar Reserva:</strong></h4>
+                    </div>
+
+                    <div class="form-row" align="left">
+                       Presione la casilla a continuación para indicar fecha y hora de inicio y término del préstamo.
+                    </div>
+
+                        <div class="form-row"  style=" background-color: #e9ecef;border: 1px solid black; padding-top: 40px;padding-bottom: 20px;padding-right: 20px;padding-left: 10px">
+
+
+                            <div class="container">
+
+
+                                <div class="form-row" style="padding-left: 100px" >
+
+                                    <input type="text" name="datetimes" style="min-width: 250px;" />
+
+
+
+
+                                    <script>
+                                        $('input[name="datetimes"]').daterangepicker({
+                                            timePicker: true,
+                                            startDate: moment().startOf('hour').add(2, 'hour'),
+                                            endDate: moment().startOf('hour').add(26, 'hour'),
+                                            locale: {
+                                                format: 'M/DD hh:mm A',
+                                                separator: " - ",
+                                                applyLabel: "Aceptar",
+                                                cancelLabel: "Cancelar",
+                                                fromLabel: "Desde",
+                                                toLabel: "Hasta",
+                                                daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                                                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                                                firstDay: 1
+                                            }
+                                        });
+
+                                    </script>
+
+                                </div>
+
+
+                                <input type="submit" value="Pedir" class="button pull-right">
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+                    <div class="form-row" style="padding-top: 30px; padding-bottom: 10px">
+                       <h4><strong>Últimos Préstamos:</strong></h4>
+                    </div>
+
+
+                    <div class="form-row"  style=" border: 1px solid black; padding-top: 10px;padding-bottom: 10px;padding-right: 10px;padding-left: 10px">
+                       <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+                        <li> 01/01/01 01:01 - 05/01/01 01:01 Sebastian Arriola </li>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+ </div>
+
+
+{% endblock %}
