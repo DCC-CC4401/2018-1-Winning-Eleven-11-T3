@@ -97,12 +97,14 @@
       allDaySlot: false,
       editable: false,
       events: [ {% for res in listaReservas %}
+          {% if res.estado != "Rechazada" %}
                {
               title: '{{ res.title }}',
               start: '{{ res.start }}',
               end: '{{ res.end }}',
               color: '{{ res.color }}'
             },
+          {% endif %}
           {% endfor %}
       ]
     });
