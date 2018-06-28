@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.busqueda_simple, name='simple'),
-    path('test', views.test, name='test'),
+    path('espacios/', views.espacios, name='espacios'),
     path('avanzada/', views.busqueda_avanzada, name='avanzada'),
     path('<int:anId>/', views.viewitem, name='viewitem'),
     path('ajax/guardar_titulo/', views.guardar_titulo, name='guardar_titulo'),

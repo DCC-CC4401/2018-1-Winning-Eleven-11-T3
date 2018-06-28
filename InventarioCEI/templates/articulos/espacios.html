@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% load static %}
+<link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+<link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
+
+
+<!---------->
+{% block title %}CEI - Administrador{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="column left">
+        </div>
+  <div class="column right">
+    <h1>Administrador</h1>
+    <hr>
+
+  </div>
+</div>
+<div class="row">
+  <div class="column left">
+      <table>
+        <tr>
+            <div style="font-size: 50px;" class="menuButton" name="user" value=""><i class="fa fa-user"></i></div>
+        </tr>
+        <tr>
+            <div style="font-size: 50px" class="menuButton" name="cart" value=""><i class="fa fa-shopping-cart"></i></div>
+        </tr>
+          <tr>
+            <div style="font-size: 50px" class="menuButton" name="calendar" value=""><i class="fa fa-calendar"></i></div>
+        </tr>
+      </table>
+  </div>
+  <div class="column right">
+            <div id="calendar"></div>
+    <div align="center" style="margin-bottom: 50px">
+        <form method="POST">
+        {% for espacio in listaEspacios %}
+            {% csrf_token %}
+            <input class="boxEspacios" type="checkbox" name="optcheck{{ espacio.id }}" value="{{ espacio.id }}" {% if espacio.id in filtroEspacio %}checked="checked"{% endif %}> {{ espacio.nombre }} <span class="dot" style="background-color: {{ espacio.color }}"></span>
+        {% endfor %}
+        </form>
+    </div>
+      <div class="row">
+
+          <div class="EqualColumn" style="margin-left: 20px; margin-right:50px">
+           <form method="POST">
+            <p>
+            <h3 style="display: inline; float: left">Pendientes</h3>
+
+                      {% csrf_token %}
+              <span style="float:right; margin-left: 20px; font-size: 30px">
+                  <button type="submit" class="btn-none" name="aceptarPedidos"><i class="fa fa-check-circle"></i></button>
+                  <button type="submit" class="btn-none" name="rechazarPedidos"><i class="fa fa-times-circle"></i></button>
+              </span>
+            </p><br>
+                    <hr>
+              <!--- tabla con articulos !-->
+      <table class="table" align="left" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 5%"></th>
+              <th style="width: 20%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 25%"> Fecha de Solicitud</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for solicitud in totalSolicitudes %}
+              {% if solicitud.estado_sol == "Pendiente"%}
+              <tr>
+                  <td><input type="checkbox" name='checkedPend[]' value="{{solicitud.id}}"></td>
+                  <td>{{solicitud.prestable.id}}</td>
+                  <td>{{solicitud.persona.user.first_name }}</td>
+                  <td>{{solicitud.tiempo_inicio|date:'d/m/Y H:i'  }}</td>
+                  <td>{{solicitud.tiempo_final|date:'d/m/Y H:i'  }}</td>
+              </tr>
+              {%  endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+          </form>
+          </div>
+          <div class="EqualColumn" align="right" style="margin-right: 20px">
+
+
+            <p>
+            <h3 style="display: inline; float: left">Pedidos</h3>
+              <div style="display:inline; font-size: small">
+                <a href="javascript:void(0)" id="filtrarTodos" style="margin-right: 2px">Todos</a>
+                <a href="javascript:void(0)" id="filtrarVigentes" style="margin-right: 2px">Vigentes</a>
+                <a href="javascript:void(0)" id="filtrarCaducados" style="margin-right: 2px">Caducados</a>
+                <a href="javascript:void(0)" id="filtrarPerdidos" style="margin-right: 2px">Perdidos</a>
+            </div>
+            <span style="float:right; margin-left: 20px; font-size: 30px"> <i class="fa fa-check-circle" ></i>
+                        <i class="fa fa-times-circle"></i></span>
+            </p>
+                    <hr>
+
+              <!--- tabla con pedidos !-->
+            <div class="filter" id="mostrar_filtrarTodos">
+<table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for prest in totalPrestamos %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
+                  <td>{{prest.solicitud_aceptada.id}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{prest.estado_sol }}</td>
+              </tr>
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarVigentes">
+     <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Vigente" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
+                  <td>{{prest.solicitud_aceptada.id}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{ prest.estado_sol }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarCaducados">
+        <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Caducada" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
+                  <td>{{prest.solicitud_aceptada.id}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{prest.estado_sol }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+            <div class="filter" style="display:none" id="mostrar_filtrarPerdidos">
+        <table class="table" align="right" style="font-size: small">
+          <thead class="thead-light">
+          <tr>
+              <th style="width: 5%"> </th>
+              <th style="width: 25%">Artículo</th>
+              <th style="width: 25%">Usuario</th>
+              <th style="width: 25%">Fecha de Préstamo</th>
+              <th style="width: 20%">Estado</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for prest in totalPrestamos %}
+                  {% if prest.estado_sol == "Perdida" %}
+              <tr>
+                  <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
+                  <td>{{prest.solicitud_aceptada.id}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
+                  <td>{{prest.estado_sol }}</td>
+              </tr>
+                  {% endif %}
+          {%  endfor %}
+          </tbody>
+      </table>
+              </div>
+          </div>
+      </div>
+
+  </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript">
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+      })
+  </script>
+
+    {% load static %}
+    <link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+    <link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
+    <script type="text/javascript" src="{% static 'scripts/lib/moment.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'scripts/lib/jquery.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'scripts/customCalendar.js'%}"></script>
+    <script type="text/javascript" src="{% static 'scripts/locale-all.js'%}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script>
+  $(document).ready(function() {
+    var LocalCode = 'es-do';
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prevMonth, prev',
+        center: 'title today',
+          right: 'next, nextMonth'
+      },
+      locale: LocalCode,
+      defaultView: 'agendaWeek',
+      weekends: false,
+      minTime: '09:00:00',
+      maxTime: '18:00:00',
+      aspectRatio: 2.7,
+      allDaySlot: false,
+      editable: false,
+      events: [ {% for res in listaReservas %}
+          {% if res.estado != "Rechazada" %}
+               {
+              title: '{{ res.title }}',
+              start: '{{ res.start }}',
+              end: '{{ res.end }}',
+              color: '{{ res.color }}'
+            },
+          {% endif %}
+          {% endfor %}
+      ]
+    });
+    $('input[class=boxEspacios]').on('click', function() {
+         $(this).closest("form").submit();
+    });
+     $('a').on('click', function(e) {
+         var id= $(this).attr('id');
+         var tabla = document.getElementById("mostrar_"+id.toString());
+         $(".filter").hide();
+         tabla.setAttribute("style", "display:inline")
+     });
+  });
+</script>
+{% endblock %}
