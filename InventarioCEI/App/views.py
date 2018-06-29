@@ -12,6 +12,9 @@ from App.models import Solicitudes, Prestamos, Aforo
 
 # Create your views here.
 
+def test(request):
+    return render(request, 'test.html')
+
 
 def espacios(request):
     context = {}
@@ -209,17 +212,17 @@ def enviar_solicitud(request):
         theId = request.POST.get('id')
         data={}
 
-        fechaInicial = datetime.strptime(request.POST.get('fechaInicial'),"%Y/%m/%d %H:%M")
-        fechaFinal = datetime.strptime(request.POST.get('fechaFinal'),"%Y/%m/%d %H:%M")
+        fechaInicial = datetime.strptime(request.POST.get('fechaInicial'), "%Y/%m/%d %H:%M")
+        fechaFinal = datetime.strptime(request.POST.get('fechaFinal'), "%Y/%m/%d %H:%M")
         theEmail = request.POST.get('mailUsuario')
 
         if(
-            Solicitudes.objects.filter(estado_sol="Aceptada",tiempo_inicio__lte=fechaInicial,tiempo_final__gte=fechaInicial).count()+
-            Solicitudes.objects.filter(estado_sol="Aceptada",tiempo_inicio__lte=fechaFinal,tiempo_final__gte=fechaFinal).count()>0):
+            Solicitudes.objects.filter(estado_sol="Aceptada", tiempo_inicio__lte=fechaInicial, tiempo_final__gte=fechaInicial).count()+
+            Solicitudes.objects.filter(estado_sol="Aceptada", tiempo_inicio__lte=fechaFinal, tiempo_final__gte=fechaFinal).count()>0):
             data['a_message'] = 'Ya existe una reserva aceptada en el rango de fechas indicado.'
             return JsonResponse(data)
 
-        if (fechaInicial.weekday()>4 or
+        if (fechaInicial.weekday() > 4 or
             fechaFinal.weekday() > 4 or
             fechaInicial.hour > 17 or
             fechaInicial.hour < 9 or
@@ -228,11 +231,11 @@ def enviar_solicitud(request):
             data['a_message'] = 'Los reservas solo pueden ser durante días hábiles entre 09 y 18 hrs.'
             return JsonResponse(data)
 
-        if (fechaFinal - fechaInicial).total_seconds()<=0:
+        if (fechaFinal - fechaInicial).total_seconds() <= 0:
             data['a_message'] = 'La fecha y hora de término de la reserva debe ser posterior a la de inicio.'
             return JsonResponse(data)
 
-        if (fechaInicial - fechaSolicitud).total_seconds()<3600:
+        if (fechaInicial - fechaSolicitud).total_seconds() < 3600:
             data['a_message'] = 'Las reservas deben ser solicitadas con un mínimo de una hora de anticipación.'
             return JsonResponse(data)
 
