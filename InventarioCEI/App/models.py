@@ -36,7 +36,6 @@ class Prestables(models.Model):
 
 
 # Para espacios, detalle de la cantidad de asistentes maxima
-# Para espacios, detalle de la cantidad de asistentes maxima
 class Aforo(models.Model):
     espacio = models.OneToOneField(Prestables, on_delete=models.CASCADE, default=None)
     capacidad = models.IntegerField(default=0)

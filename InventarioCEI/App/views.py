@@ -44,7 +44,7 @@ def espacios(request):
 
             checkedPend = request.POST.getlist('checkedPend[]')
             for checked in checkedPend:
-                una_solicitud = Solicitudes.objects.get(id=int(checked))
+                una_solicitud = Solicitudes.objects.get(id=checked)
                 if "aceptarPedidos" in request.POST:
                     una_solicitud.estado_sol = "Aceptada"
                     nuevo_prestamo = Prestamos()
