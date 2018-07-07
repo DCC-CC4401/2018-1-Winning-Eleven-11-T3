@@ -109,7 +109,7 @@ def busqueda_avanzada(request):
             else:
                 busqueda = busqueda.filter(estado=request.POST['estado'])
                 context['busqueda'] = busqueda[:12]
-    populares = Prestables.objects.all().order_by("-solicitudes")[:6]
+    populares = Prestables.objects.all().order_by("-numsolic")[:6]
     context['populares'] = populares
     return render(request, 'articulos/articulos-bavanzada.html', context)
 
