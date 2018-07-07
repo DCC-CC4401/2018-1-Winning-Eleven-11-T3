@@ -210,7 +210,7 @@ def enviar_solicitud(request):
 
     if request.method == "POST":
         theId = request.POST.get('id')
-        data={}
+        data = {}
 
         fechaInicial = datetime.strptime(request.POST.get('fechaInicial'), "%Y/%m/%d %H:%M")
         fechaFinal = datetime.strptime(request.POST.get('fechaFinal'), "%Y/%m/%d %H:%M")
