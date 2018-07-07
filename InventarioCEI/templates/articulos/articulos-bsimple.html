@@ -4,6 +4,14 @@
 {% block content %}
     {% block form-busqueda %}
     <div class="container">
+        <div class="row justify-content-center" style="margin-bottom:20px;">
+            <div class="col-2">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-success" disabled>Articulos</button>
+                  <button type="button" class="btn btn-outline-success" onclick="location.href='/articulos/espacios'">Espacios</button>
+                </div>
+            </div>
+        </div>
         <form method="post">
             {% csrf_token %}
             <div class="form-row">
@@ -11,7 +19,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="nombre" id="nombre" placeholder="ej: parlante">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary" name="modo" value="0">Buscar</button>
+                            <button type="submit" class="btn btn-outline-success" name="modo" value="0">Buscar</button>
                         </div>
                     </div>
                 </div>
