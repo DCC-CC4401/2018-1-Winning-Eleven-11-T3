@@ -1,6 +1,14 @@
 {% extends "articulos/articulos-bsimple.html" %}
 {% block form-busqueda %}
     <div class="container">
+        <div class="row justify-content-center" style="margin-bottom:20px;">
+            <div class="col-2">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-success" disabled>Articulos</button>
+                    <button type="button" class="btn btn-outline-success" onclick="location.href='/espacios'">Espacios</button>
+                </div>
+            </div>
+        </div>
         <div class="alert alert-secondary" role="alert">
             <form method="post">
                 {% csrf_token %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Prestables
 from django.http import JsonResponse
 import os
@@ -11,6 +11,11 @@ from App.models import Solicitudes, Prestamos, Aforo
 
 
 # Create your views here.
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('/articulos/')
+    return render(request, 'userSystem/home.html')
+
 
 def espacios(request):
     context = {}
@@ -190,7 +195,7 @@ def busqueda_avanzada(request):
         if request.POST.get('identifier'):
             busqueda = busqueda.filter(id=request.POST['identifier'])
             context['busqueda'] = busqueda[:12]
-    populares = Prestables.objects.all().order_by("-solicitudes")[:6]
+    populares = Prestables.objects.all().order_by("-numsolic")[:6]
     context['populares'] = populares
     return render(request, 'articulos/articulos-bavanzada.html', context)
 
