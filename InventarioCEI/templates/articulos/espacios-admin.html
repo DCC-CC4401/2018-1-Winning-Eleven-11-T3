@@ -71,8 +71,8 @@
               {% if solicitud.estado_sol == "Pendiente"%}
               <tr>
                   <td><input type="checkbox" name='checkedPend[]' value="{{solicitud.id}}"></td>
-                  <td>{{solicitud.prestable.id}}</td>
-                  <td>{{solicitud.persona.user.first_name }}</td>
+                  <td>{{solicitud.prestable.nombre}}</td>
+                  <td>{{solicitud.persona.user.first_name}} {{solicitud.persona.user.last_name}} </td>
                   <td>{{solicitud.tiempo_inicio|date:'d/m/Y H:i'  }}</td>
                   <td>{{solicitud.tiempo_final|date:'d/m/Y H:i'  }}</td>
               </tr>
@@ -114,8 +114,8 @@
           {% for prest in totalPrestamos %}
               <tr>
                   <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
-                  <td>{{prest.solicitud_aceptada.id}}</td>
-                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.prestable.nombre}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.first_name}} {{prest.solicitud_aceptada.persona.user.last_name }}</td>
                   <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
                   <td>{{prest.estado_sol }}</td>
               </tr>
@@ -139,8 +139,8 @@
                   {% if prest.estado_sol == "Vigente" %}
               <tr>
                   <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
-                  <td>{{prest.solicitud_aceptada.id}}</td>
-                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.prestable.nombre}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.first_name}} {{prest.solicitud_aceptada.persona.user.last_name }}</td>
                   <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
                   <td>{{ prest.estado_sol }}</td>
               </tr>
@@ -165,8 +165,8 @@
                   {% if prest.estado_sol == "Caducada" %}
               <tr>
                   <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
-                  <td>{{prest.solicitud_aceptada.id}}</td>
-                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.prestable.nombre}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.first_name}} {{prest.solicitud_aceptada.persona.user.last_name }} </td>
                   <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
                   <td>{{prest.estado_sol }}</td>
               </tr>
@@ -191,8 +191,8 @@
                   {% if prest.estado_sol == "Perdida" %}
               <tr>
                   <td><input type="checkbox" value="{{prest.solicitud_aceptada.id}}"></td>
-                  <td>{{prest.solicitud_aceptada.id}}</td>
-                  <td>{{prest.solicitud_aceptada.persona.user.rut }}</td>
+                  <td>{{prest.solicitud_aceptada.prestable.nombre}}</td>
+                  <td>{{prest.solicitud_aceptada.persona.user.first_name}} {{prest.solicitud_aceptada.persona.user.last_name }}</td>
                   <td>{{prest.solicitud_aceptada.tiempo_inicio|date:'d/m/Y H:i' }}</td>
                   <td>{{prest.estado_sol }}</td>
               </tr>
