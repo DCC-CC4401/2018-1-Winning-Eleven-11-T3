@@ -44,7 +44,7 @@ def espacios(request):
 
             checkedPend = request.POST.getlist('checkedPend[]')
             for checked in checkedPend:
-                una_solicitud = Solicitudes.objects.get(id=int(checked))
+                una_solicitud = Solicitudes.objects.get(id=checked)
                 if "aceptarPedidos" in request.POST:
                     una_solicitud.estado_sol = "Aceptada"
                     nuevo_prestamo = Prestamos()
@@ -81,10 +81,11 @@ def espacios(request):
                                                                'totalSolicitudes': total_solicitudes,
                                                                'filtroEspacio': filtro_espacio})
 
+
 def perfil_usuario(request):
     context = {}
-    #anItem = Prestables.objects.get(id=anId)
-    #context['anItem'] = anItem
+    # anItem = Prestables.objects.get(id=anId)
+    # context['anItem'] = anItem
     SolItems = Solicitudes.objects.all()
 
     AforoItems = Aforo.objects.all()
@@ -95,9 +96,8 @@ def perfil_usuario(request):
     all_item_sol_pend = []
     all_item_sol_acep = []
 
-
     for sol in SolItems:
-            #if prest.estado_sol == 'Vigente':
+            # if prest.estado_sol == 'Vigente':
             all_item_sol_pend.append(sol)
     context['allItem'] = all_item_sol_pend
     context['isSolicitud'] = True
@@ -105,11 +105,11 @@ def perfil_usuario(request):
     if request.method == 'POST':
         checkedPend = request.POST.getlist('checkedPend')
 
-        #import pdb
-        #pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         if "mytextbox1" not in request.POST and "mytextbox2" not in request.POST :
             for checked in checkedPend:
-                #if "rechazar" in request.POST:
+                # if "rechazar" in request.POST:
                     un_prestamo = Solicitudes.objects.get(pk=checked)
                     un_prestamo.delete()
 
@@ -155,13 +155,12 @@ def perfil_usuario(request):
                 context['allItem'] = all_item_sol_pend[:10]
                 context['isSolicitud'] = True
 
-
-
-    #populares = Prestables.objects.all()
-    #context['allItem'] = populares[:10]
+    # populares = Prestables.objects.all()
+    # context['allItem'] = populares[:10]
 
     return render(request, 'articulos/perfil_usuario.html', context)
-    #do something with this user
+    # do something with this user
+
 
 def busqueda_simple(request):
     context = {}
