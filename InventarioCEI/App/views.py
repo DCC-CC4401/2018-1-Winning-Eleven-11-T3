@@ -57,7 +57,9 @@ def espacios(request):
                     for un_espacio in espacios_list:
                         if solicitud.prestable.id == un_espacio["id"]:
                             reserva_dic = {
-                                "title": str(solicitud.prestable.nombre) + "-" + str(solicitud.persona),
+                                "title": str(solicitud.prestable.nombre) + "-" +
+                                         str(solicitud.persona.user.first_name) + " "
+                                         + str(solicitud.persona.user.last_name),
                                 "start": solicitud.tiempo_inicio.strftime("%Y-%m-%dT%H:%M:%S"),
                                 "end": solicitud.tiempo_final.strftime("%Y-%m-%dT%H:%M:%S"),
                                 "color": un_espacio["color"],
