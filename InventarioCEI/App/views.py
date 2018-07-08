@@ -12,10 +12,6 @@ from App.models import Solicitudes, Prestamos, Aforo
 
 # Create your views here.
 
-def test(request):
-    return render(request, 'test.html')
-
-
 def espacios(request):
     context = {}
     if request.user.is_authenticated:
