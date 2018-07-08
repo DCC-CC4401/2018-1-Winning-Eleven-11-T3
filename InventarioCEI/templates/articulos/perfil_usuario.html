@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+
+
+        <style>
+
+            :root {
+                --footer-color: green;
+            }
+
+            estado {
+                border-radius: 10px;
+                margin: 20px;
+                padding: 5px;
+                background-color: var(--footer-color);
+            }
+            input[type="checkbox"]{
+              width: 18px; /*Desired width*/
+              height: 18px; /*Desired height*/
+              zoom: 1.0;
+            }
+        a:link {
+            color: blue;
+        }
+        a {
+            color: blue;
+        }
+
+        a:visited {
+        color: blue;
+        }
+
+        </style>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <div class="container" align="center">
+        <div class="form-row" align="center">
+                    <form action="#" method="get">
+                        <div class="col-sm-12 text-center">
+                                    <input type="submit" class="btn btn-outline-dark" value="Reserva tu espacio" name="topB1" style=    "margin-left: 15px; font-size : 40px; height:200px;width:500px">
+                                    <input type="submit" class="btn btn-outline-dark" value="Pide tu artículo" name="topB2" style="margin-left: 40px; font-size : 40px; height:200px;width:500px">
+                        </div>
+                    </form>
+        </div>
+    </div>
+    <div class="form-row">
+        <p></p>
+    </div>
+    <div class="form-row">
+        <p></p>
+    </div>
+    <div class="form-row">
+        <p></p>
+    </div>
+        <div class="form-row">
+        <p></p>
+    </div>
+        <div class="form-row">
+        <p></p>
+    </div>
+    <form method="POST", id="form1">
+     {% csrf_token %}
+    <div class="container" align="center">
+         <div class="form-row">
+           <form action="#" method="get">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-dark" value="Reserva" name="mytextbox1" aria-pressed="true" style=" height:40px;width:250px">
+                <input type="submit" class="btn btn-outline-dark" value="Préstamos" name="mytextbox2" aria-pressed="true" style="height:40px;width:250px">
+           </form>
+
+             {% if isSolicitud %}
+                        <span style="float:left; margin-left: 420px; font-size: 20px" >
+                            <a href="#" type="btn btn-danger" >
+                                <button type="submit" class ="btn btn-danger"  form = form1> <i class="fa fa-trash" form = form1></i> Eliminar seleccionados</button>
+                            </a>
+                        </span>
+               {% endif %}
+         </div>
+    </div>
+    <p></p>
+    <div class="form-row">
+        <p></p>
+    </div>
+    <div class="form-row">
+        <p></p>
+    </div>
+
+
+     <div class="container" align="center"  >
+        <div class="form-row">
+           <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <style>
+            * {box-sizing: border-box}
+            body {font-family: "Lato", sans-serif;}
+
+            /* Style the tab */
+            .tab {
+                float: left;
+                border: 1px solid black;
+                width: 42%;
+                height: 600px;
+            }
+
+            /* Style the buttons inside the tab */
+            .tab button {
+                display: block;
+                background-color: #fff;
+                color: black;
+                padding: 22px 16px;
+                width: 100%;
+                border: 1px solid black;
+                outline: none;
+                text-align: left;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ggg;
+                border: 1px solid black;
+            }
+
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: #9ea3a8;
+                border: 1px solid black;
+            }
+
+            /* Style the tab content */
+            .tabcontent {
+                float: left;
+                padding: 0px 12px;
+                border: 1px solid black;
+                width: 58%;
+                    border-left: none;
+                height: 600px;
+            }
+            </style>
+            </head>
+            <body>
+
+            <div class="tab">
+              {% if not allItem %}
+                  <button class="tablinks" onclick="openCity(event, 'EmptyList')" id="defaultOpen">No hay solicitudes</button>
+              {% else %}
+                  {% for prest in allItem  %}
+                      {% if isSolicitud %}
+                          {% if forloop.first %}
+                              <button class="tablinks" onclick="openCity(event, {{prest.prestable.id }})" id="defaultOpen">
+ <input type="checkbox"  name=  'checkedPend'  form = "form1" value="{{prest.id}}"  form = "form1"style="margin-right: 10px;"> {{ prest.prestable.nombre }}  </button>
+                          {% else %}
+                              <button class="tablinks" onclick="openCity(event, {{prest.prestable.id }} )">   <input type="checkbox"  name=  'checkedPend' value="{{prest.id}}"  form = "form1" style="margin-right: 10px;">   {{ prest.prestable.nombre }}  </button>
+                          {% endif %}
+                      {% else %}
+                          {% if forloop.first %}
+                              <button class="tablinks" onclick="openCity(event, {{prest.prestable.id }})" id="defaultOpen"> {{ prest.prestable.nombre }}</button>
+                          {% else %}
+                                  <button class="tablinks" onclick="openCity(event, {{prest.prestable.id }} )">  {{ prest.prestable.nombre }}  </button>
+                          {% endif %}
+                      {% endif %}
+                  {%  endfor %}
+              {% endif %}
+            </div>
+            {% if not allItem %}
+                <div id="EmptyList" class="tabcontent">
+                  <h3>No tiene solicitudes realizadas</h3>
+                </div>
+            {% else %}
+                {% for prest in allItem  %}
+                    <div id= {{ prest.prestable.id}} class="tabcontent">
+                        <div class = "form-row" style="margin-top: 30px;">
+                            <p align="left" style="margin-left: 55px; font-size: 45px;">{{ prest.prestable.nombre }}</p>
+                            <span style=" margin-left: 35px;margin-top: 15px;font-size: 25px;">
+                                {% if prest.estado_sol == "Aceptada" %}
+                                    <div class="btn btn-success" >{{ prest.estado_sol }}</div>
+                                {% elif prest.estado_sol == "Pendiente" %}
+                                    <div class="btn btn-primary" >{{ prest.estado_sol }}</div>
+                                {% else %}
+                                    <div class="btn btn-danger" >{{ prest.estado_sol }}</div>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="form-row" style="margin-left: 55px; font-size: 15px;">
+                            {% if isSolicitud %}
+                                <p > Solicitud enviada el {{ prest.tiempo_inicio}}  </p>
+                            {% else %}
+                                <p > Artículo por entregar el {{ prest.tiempo_final}}  </p>
+                            {% endif %}
+                        </div>
+                        <div class="form-row" >
+                          <p style="margin-top: 20px; margin-left: 60px; border: 2px solid black;"> <img src="{% get_media_prefix %}{{ prest.prestable.imagen }}" width="200" height="200">  </p>
+                          <span style="float:right; margin-top: 30px; margin-left: 50px " >
+                            <p>{{ prest.prestable.descripcion  }}</p>
+                          </span>
+                        </div>
+                        <div class = "form-row"; style = "margin-left: 60px; color=blue" >
+                             <a href="/articulos/{{ prest.prestable.id }}">Ver detalle</a>
+                        </div>
+                    </div>
+                {%  endfor %}
+            {% endif %}
+            <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+            </script>
+
+            </body>
+        </div>
+        </div>
+
+    </form>
+{% endblock %}
+
+
+{% block extra_script %}
+            <script type="text/javascript">
+               for (var i = 0; i < prest.length; )
+                var estado_sol = document.getElements("myEstado").innerText;
+                if(estado_sol=="Aceptada") {
+                    document.documentElement.style.setProperty('--footer-color', 'green');
+                }
+                else if(estado_sol=="Pendiente"){
+                    document.documentElement.style.setProperty('--footer-color', 'blue');
+                }
+                else if(estado_sol=="Rechazada"){
+                    document.documentElement.style.setProperty('--footer-color', 'red');
+                }
+            </script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0/js/tempusdominus-bootstrap-4.min.js"></script>
+{% endblock %}
