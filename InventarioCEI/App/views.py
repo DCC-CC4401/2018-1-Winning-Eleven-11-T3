@@ -164,7 +164,7 @@ def busqueda_simple(request):
         if request.method == 'POST':
             busqueda = Prestables.objects.all()
             if request.POST.get('nombre', False):
-                busqueda = busqueda.filter(nombre=request.POST['nombre'])
+                busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
                 context['busqueda'] = busqueda[:12]
         populares = Prestables.objects.all().order_by("-numsolic")[:6]
         context['populares'] = populares
@@ -177,7 +177,7 @@ def busqueda_avanzada(request):
     if request.method == 'POST':
         busqueda = Prestables.objects.all()
         if request.POST.get('nombre', False):
-            busqueda = busqueda.filter(nombre=request.POST['nombre'])
+            busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
             context['busqueda'] = busqueda[:12]
         if request.POST.get('estado', False):
             if request.POST['estado'] == 'any':
@@ -185,6 +185,9 @@ def busqueda_avanzada(request):
             else:
                 busqueda = busqueda.filter(estado=request.POST['estado'])
                 context['busqueda'] = busqueda[:12]
+        if request.POST.get('identifier'):
+            busqueda = busqueda.filter(id=request.POST['identifier'])
+            context['busqueda'] = busqueda[:12]
     populares = Prestables.objects.all().order_by("-solicitudes")[:6]
     context['populares'] = populares
     return render(request, 'articulos/articulos-bavanzada.html', context)
