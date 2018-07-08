@@ -165,6 +165,7 @@
                     'mailUsuario': mailUsuario,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
+                type : "POST",
                 success: function (data) {
                     alert(data.a_message);
                 }
