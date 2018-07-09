@@ -187,27 +187,28 @@ def busqueda_simple(request):
 
 def busqueda_avanzada(request):
     context = {}
-    if request.method == 'POST':
-        if request.user.is_user:
-            busqueda = Prestables.objects.all()
-            if request.POST.get('nombre', False):
-                busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
-                context['busqueda'] = busqueda[:12]
-            if request.POST.get('estado', False):
-                if request.POST['estado'] == 'any':
+    if request.user.is_authenticated:
+        if request.user.is_administrador:
+            return render(request, '404.html')
+        else:
+            if request.method == 'POST':
+                busqueda = Prestables.objects.all()
+                if request.POST.get('nombre', False):
+                    busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
                     context['busqueda'] = busqueda[:12]
-                else:
-                    busqueda = busqueda.filter(estado=request.POST['estado'])
+                if request.POST.get('estado', False):
+                    if request.POST['estado'] == 'any':
+                        context['busqueda'] = busqueda[:12]
+                    else:
+                        busqueda = busqueda.filter(estado=request.POST['estado'])
+                        context['busqueda'] = busqueda[:12]
+                if request.POST.get('identifier'):
+                    busqueda = busqueda.filter(id=request.POST['identifier'])
                     context['busqueda'] = busqueda[:12]
-            if request.POST.get('identifier'):
-                busqueda = busqueda.filter(id=request.POST['identifier'])
-                context['busqueda'] = busqueda[:12]
             populares = Prestables.objects.all().order_by("-numsolic")[:6]
             context['populares'] = populares
             return render(request, 'articulos/articulos-bavanzada.html', context)
-        else:
-            return render(request, '404.html')
-    return render(request, 'home.html')
+    return render(request, 'home.html', context)
 
 
 def viewitem(request, anId):
