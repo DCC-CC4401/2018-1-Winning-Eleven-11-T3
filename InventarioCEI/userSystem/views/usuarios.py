@@ -21,12 +21,4 @@ class UsuariosSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('usuarios:user_landing_view')
-
-
-@method_decorator([login_required, user_required], name='dispatch')
-class LandingUserView(ListView):
-    model = Usuarios
-    ordering = ('name',)
-    context_object_name = 'user_landing'
-    template_name = 'userSystem/usuarios/user_landing_view.html'
+        return redirect('/articulos')

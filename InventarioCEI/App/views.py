@@ -14,7 +14,7 @@ from App.models import Solicitudes, Prestamos, Aforo
 def home(request):
     if request.user.is_authenticated:
         return redirect('/articulos/')
-    return render(request, 'userSystem/home.html')
+    return render(request, 'userSystem/../templates/home.html')
 
 
 def espacios(request):
@@ -176,7 +176,7 @@ def busqueda_simple(request):
         populares = Prestables.objects.all().order_by("-numsolic")[:6]
         context['populares'] = populares
         return render(request, 'articulos/articulos-bsimple.html', context)
-    return render(request, 'userSystem/home.html')
+    return render(request, 'userSystem/../templates/home.html')
 
 
 def busqueda_avanzada(request):
@@ -215,7 +215,7 @@ def viewitem(request, anId):
             return render(request, 'articulos/viewitem.html',
                           {'anItem': anItem, 'solicitudes': ultimasSolicitudes})
 
-    return render(request, 'userSystem/home.html')
+    return render(request, 'userSystem/../templates/home.html')
 
 
 def guardar_titulo(request):
