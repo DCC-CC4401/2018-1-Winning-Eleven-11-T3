@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+<link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+<link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
+
+
+<!---------->
+{% block title %}CEI - Espacios{% endblock %}
+
+{% block content %}
+    <div class="conatiner">
+        <div class="row justify-content-center" style="margin-bottom:20px;">
+            <div class="col-1">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-outline-success" onclick="location.href='/articulos'">Articulos</button>
+                    <button type="button" class="btn btn-success" disabled>Espacios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div id="calendar"></div>
+                <div align="center" style="margin-bottom: 50px">
+                    <form method="POST">
+                        {% for espacio in listaEspacios %}
+                            {% csrf_token %}
+                            <input class="boxEspacios" type="checkbox" name="optcheck{{ espacio.id }}" value="{{ espacio.id }}" {% if espacio.id in filtroEspacio %}checked="checked"{% endif %}> {{ espacio.nombre }} <span class="dot" style="background-color: {{ espacio.color }}"></span>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript">
+      $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script>
+
+    {% load static %}
+    <link href="{% static 'scripts/fullcalendar.min.css'%}" rel='stylesheet' />
+    <link href="{% static 'css/LandingAdmin.css'%}" rel='stylesheet' />
+    <script type="text/javascript" src="{% static 'scripts/lib/moment.min.js'%}"></script>
+    <script type="text/javascript" src="{% static 'scripts/customCalendar.js'%}"></script>
+    <script type="text/javascript" src="{% static 'scripts/locale-all.js'%}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function() {
+        var LocalCode = 'es-do';
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prevMonth, prev',
+            center: 'title today',
+              right: 'next, nextMonth'
+          },
+          locale: LocalCode,
+          defaultView: 'agendaWeek',
+          weekends: false,
+          minTime: '09:00:00',
+          maxTime: '18:00:00',
+          aspectRatio: 2.7,
+          allDaySlot: false,
+          editable: false,
+          events: [ {% for res in listaReservas %}
+              {% if res.estado != "Rechazada" %}
+                   {
+                  title: '{{ res.title }}',
+                  start: '{{ res.start }}',
+                  end: '{{ res.end }}',
+                  color: '{{ res.color }}'
+                },
+              {% endif %}
+              {% endfor %}
+          ]
+        });
+        $('input[class=boxEspacios]').on('click', function() {
+             $(this).closest("form").submit();
+        });
+         $('a').on('click', function(e) {
+             var id= $(this).attr('id');
+             var tabla = document.getElementById("mostrar_"+id.toString());
+             $(".filter").hide();
+             tabla.setAttribute("style", "display:inline")
+         });
+      });
+    </script>
+{% endblock %}

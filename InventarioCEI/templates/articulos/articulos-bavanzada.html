@@ -1,0 +1,47 @@
+{% extends "articulos/articulos-bsimple.html" %}
+{% block form-busqueda %}
+    <div class="container">
+        <div class="row justify-content-center" style="margin-bottom:20px;">
+            <div class="col-2">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-success" disabled>Articulos</button>
+                    <button type="button" class="btn btn-outline-success" onclick="location.href='/espacios'">Espacios</button>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-secondary" role="alert">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="ej: parlante">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="identifier">id</label>
+                        <input type="text" class="form-control" name="nombre" id="identifier" placeholder="ej: 0123456789">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="estado">Disponibilidad</label>
+                        <select name="estado" id="estado" class="form-control">
+                            <option selected value="any">Cualquiera</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="En prestamo">En préstamo</option>
+                            <option value="En reparacion">En reparación</option>
+                            <option value="Perdido">Perdido</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col text-right">
+                        <a href="/articulos/" id="link-simple" class="btn btn-link">Búsqueda Simple</a>
+                        <button type="submit" class="btn btn-success" name="modo" value="1">Buscar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

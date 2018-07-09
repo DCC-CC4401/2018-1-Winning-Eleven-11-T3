@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}CEI - Artículos{% endblock %}
+{% block content %}
+    {% block form-busqueda %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row justify-content-center" style="margin-bottom:20px;">
+                <div class="col-2">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-success" disabled>Articulos</button>
+                      <button type="button" class="btn btn-outline-success" onclick="location.href='/espacios'">Espacios</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="ej: parlante">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-success" name="modo" value="0">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col text-right">
+                    <a href="avanzada/" id="link-avanzada" class="btn btn-link">Búsqueda Avanzada</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endblock %}
+    {% if busqueda %}
+        <div class="container" style="margin-top:10px;margin-bottom:10px;">
+            <div class="row border-bottom">
+                <div class="col"><h2>Resultados</h2></div>
+            </div>
+            <div class="row">
+                {% for articulo in busqueda %}
+                    <div class="col-2">
+                        <a href="/articulos/{{ articulo.id }}">
+                            <div class="card" style="width:160px;margin:10px;">
+                                <img class="card-img-top img-fluid" src="{% get_media_prefix %}{{ articulo.imagen }}" style="width:158px;height:100px;">
+                                <div class="card-body" style="padding-top:0;padding-bottom:0;padding-left:8px;">
+                                    {% if articulo.estado == "Disponible" %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="green" style="display:inline-block;"/>
+                                        </svg>
+                                    {% elif articulo.estado == "En prestamo" %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="yellow" style="display:inline-block;"/>
+                                        </svg>
+                                    {% else %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="red" style="display:inline-block;"/>
+                                        </svg>
+                                    {% endif %}
+                                {{ articulo.nombre }}
+                                </div>
+                            </div>
+                         </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if populares %}
+        <div class="container" style="margin-top:10px;margin-bottom:10px;">
+            <div class="row border-bottom">
+                <div class="col"><h2>Top Pedidos</h2></div>
+            </div>
+            <div class="row">
+                {% for articulo in populares %}
+                    <div class="col-xl-2">
+                        <a href="/articulos/{{ articulo.id }}">
+                            <div class="card" style="width:160px;margin-top:10px;">
+                                <img class="card-img-top" src="{% get_media_prefix %}{{ articulo.imagen }}" style="width:158px;height:100px;">
+                                <div class="card-body" style="padding-top:0;padding-bottom:0;padding-left:8px;">
+                                    {% if articulo.estado == "Disponible" %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="green" style="display:inline-block;"/>
+                                        </svg>
+                                    {% elif articulo.estado == "En prestamo" %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="yellow" style="display:inline-block;"/>
+                                        </svg>
+                                    {% else %}
+                                        <svg width="10" height="10">
+                                            <circle cx="5" cy="5" r="5" fill="red" style="display:inline-block;"/>
+                                        </svg>
+                                    {% endif %}
+                                {{ articulo.nombre }}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
