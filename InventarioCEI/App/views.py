@@ -13,8 +13,11 @@ from App.models import Solicitudes, Prestamos, Aforo
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
-        return redirect('/articulos/')
-    return render(request, 'userSystem/../templates/home.html')
+        if request.user.is_administrador:
+            return redirect('/espacios/')
+        else:
+            return redirect('/articulos/')
+    return render(request, 'home.html')
 
 
 def espacios(request):
@@ -168,36 +171,43 @@ def perfil_usuario(request):
 def busqueda_simple(request):
     context = {}
     if request.user.is_authenticated:
-        if request.method == 'POST':
-            busqueda = Prestables.objects.all()
-            if request.POST.get('nombre', False):
-                busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
-                context['busqueda'] = busqueda[:12]
-        populares = Prestables.objects.all().order_by("-numsolic")[:6]
-        context['populares'] = populares
-        return render(request, 'articulos/articulos-bsimple.html', context)
-    return render(request, 'userSystem/../templates/home.html')
+        if request.user.is_user:
+            if request.method == 'POST':
+                busqueda = Prestables.objects.all()
+                if request.POST.get('nombre', False):
+                    busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
+                    context['busqueda'] = busqueda[:12]
+            populares = Prestables.objects.all().order_by("-numsolic")[:6]
+            context['populares'] = populares
+            return render(request, 'articulos/articulos-bsimple.html', context)
+        else:
+            return render(request, '404.html')
+    return render(request, 'home.html')
 
 
 def busqueda_avanzada(request):
     context = {}
     if request.method == 'POST':
-        busqueda = Prestables.objects.all()
-        if request.POST.get('nombre', False):
-            busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
-            context['busqueda'] = busqueda[:12]
-        if request.POST.get('estado', False):
-            if request.POST['estado'] == 'any':
+        if request.user.is_user:
+            busqueda = Prestables.objects.all()
+            if request.POST.get('nombre', False):
+                busqueda = busqueda.filter(nombre__contains=request.POST['nombre'])
                 context['busqueda'] = busqueda[:12]
-            else:
-                busqueda = busqueda.filter(estado=request.POST['estado'])
+            if request.POST.get('estado', False):
+                if request.POST['estado'] == 'any':
+                    context['busqueda'] = busqueda[:12]
+                else:
+                    busqueda = busqueda.filter(estado=request.POST['estado'])
+                    context['busqueda'] = busqueda[:12]
+            if request.POST.get('identifier'):
+                busqueda = busqueda.filter(id=request.POST['identifier'])
                 context['busqueda'] = busqueda[:12]
-        if request.POST.get('identifier'):
-            busqueda = busqueda.filter(id=request.POST['identifier'])
-            context['busqueda'] = busqueda[:12]
-    populares = Prestables.objects.all().order_by("-numsolic")[:6]
-    context['populares'] = populares
-    return render(request, 'articulos/articulos-bavanzada.html', context)
+            populares = Prestables.objects.all().order_by("-numsolic")[:6]
+            context['populares'] = populares
+            return render(request, 'articulos/articulos-bavanzada.html', context)
+        else:
+            return render(request, '404.html')
+    return render(request, 'home.html')
 
 
 def viewitem(request, anId):
