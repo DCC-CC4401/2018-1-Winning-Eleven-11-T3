@@ -88,13 +88,16 @@ def espacios(request):
                                                                'filtroEspacio': filtro_espacio})
 
 
+
 def perfil_usuario(request):
     context = {}
     # anItem = Prestables.objects.get(id=anId)
     # context['anItem'] = anItem
-    SolItems = Solicitudes.objects.all()
-
-    AforoItems = Aforo.objects.all()
+    SolItems = Solicitudes.objects.all().order_by('tiempo_inicio')
+    AforoOn = Aforo.objects.all()
+    AforoItems = []
+    for aforo in AforoOn:
+        AforoItems.append(aforo.espacio)
     PrestItems = Prestamos.objects.all()
     PrestablesItems = Prestables.objects.all()
     context['anItem'] = PrestablesItems[0]
@@ -102,10 +105,23 @@ def perfil_usuario(request):
     all_item_sol_pend = []
     all_item_sol_acep = []
 
+    aux_var_aforo = False
+    if (request.GET.get("topB1")):
+        aux_var_aforo = True
+    if (request.GET.get("topB2")):
+        aux_var_aforo = False
+
+    #if aux_var_aforo:
+    #    SolItems = AforoItems
+
     for sol in SolItems:
             # if prest.estado_sol == 'Vigente':
-            all_item_sol_pend.append(sol)
-    context['allItem'] = all_item_sol_pend
+            if sol.prestable in AforoItems and aux_var_aforo:
+                all_item_sol_pend.append(sol)
+            elif sol.prestable not in AforoItems and not aux_var_aforo:
+                all_item_sol_pend.append(sol)
+
+    context['allItem'] = all_item_sol_pend[:10]
     context['isSolicitud'] = True
 
     if request.method == 'POST':
@@ -113,13 +129,13 @@ def perfil_usuario(request):
 
         # import pdb
         # pdb.set_trace()
-        if "mytextbox1" not in request.POST and "mytextbox2" not in request.POST :
+        if "mytextbox1" not in request.POST and "mytextbox2" not in request.POST:
             for checked in checkedPend:
                 # if "rechazar" in request.POST:
                     un_prestamo = Solicitudes.objects.get(pk=checked)
                     un_prestamo.delete()
 
-            SolItems = Solicitudes.objects.all()
+            SolItems = Solicitudes.objects.all().order_by('tiempo_inicio')
             PrestItems = Prestamos.objects.all()
             PrestablesItems = Prestables.objects.all()
             context['anItem'] = PrestablesItems[0]
@@ -128,15 +144,21 @@ def perfil_usuario(request):
             all_item_sol_acep = []
 
             for sol in SolItems:
-                all_item_sol_pend.append(sol)
+                if sol.prestable in AforoItems and aux_var_aforo:
+                    all_item_sol_pend.append(sol)
+                elif sol.prestable not in AforoItems and not aux_var_aforo:
+                    all_item_sol_pend.append(sol)
 
             for sol in SolItems:
                 if sol.estado_sol == 'Aceptada':
-                    all_item_sol_acep.append(sol)
-            context['allItem'] = all_item_sol_acep
+                    if sol.prestable in AforoItems and aux_var_aforo:
+                        all_item_sol_acep.append(sol)
+                    elif sol.prestable not in AforoItems and not aux_var_aforo:
+                        all_item_sol_acep.append(sol)
+            context['allItem'] = all_item_sol_pend[:10]
             context['isSolicitud'] = True
         else:
-            SolItems = Solicitudes.objects.all()
+            SolItems = Solicitudes.objects.all().order_by('tiempo_inicio')
             PrestItems = Prestamos.objects.all()
             PrestablesItems = Prestables.objects.all()
             context['anItem'] = PrestablesItems[0]
@@ -145,12 +167,18 @@ def perfil_usuario(request):
             all_item_sol_acep = []
 
             for sol in SolItems:
-                all_item_sol_pend.append(sol)
+                if sol.prestable in AforoItems and aux_var_aforo:
+                    all_item_sol_pend.append(sol)
+                elif sol.prestable not in AforoItems and not aux_var_aforo:
+                    all_item_sol_pend.append(sol)
 
             for sol in SolItems:
                 if sol.estado_sol == 'Aceptada':
-                    all_item_sol_acep.append(sol)
-            context['allItem'] = all_item_sol_acep
+                    if sol.prestable in AforoItems and aux_var_aforo:
+                        all_item_sol_acep.append(sol)
+                    elif sol.prestable not in AforoItems and not aux_var_aforo:
+                        all_item_sol_acep.append(sol)
+            context['allItem'] = all_item_sol_pend[:10]
             context['isSolicitud'] = True
 
             if "mytextbox2" in request.POST:
