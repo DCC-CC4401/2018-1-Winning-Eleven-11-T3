@@ -26,14 +26,19 @@
               <li>
                   <span class="navbar-text">
                       <p align="right">
-                          <b>{{ user.first_name }} {{ user.last_name }}</b><br>
+                       <b>{{ user.first_name }} {{ user.last_name }}</b><br>
                           {{ user.rut }}<br>
                           {{ user.email }}
+                   {% if user.has_permission %}
+                       <div style="color: green; position: absolute; margin-top: -20px"> Habilitado para reservar <i class="fas fa-check"></i></div>
+                   {% else %}
+                       <div style="color: red; position: absolute; margin-top: -20px"> No habilitado para reservar <i class="fas fa-times"></i></div>
+                   {% endif %}
                       </p>
                   </span>
               </li>
               <li>
-                  <img src="{% static 'img/userlogo.png' %}" style="margin:20px;" width="50" height="50">
+                  <img src="{% static 'img/userlogo.png' %}" style="margin:20px;" width="40" height="40">
               </li>
               <li>
                   <div class="dropdown" style="margin-left:5px;margin-top:20px;border-collapse:collapse;">
@@ -43,6 +48,7 @@
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                       </div>
+
                   </div>
               </li>
           {% else %}
